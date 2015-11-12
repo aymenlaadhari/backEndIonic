@@ -1,4 +1,4 @@
-package de.fiduciagad.hackathon.superteam.server.controllers;
+package de.fiduciagad.sharea.server.other;
 
 import java.io.File;
 import java.util.Map.Entry;

@@ -2,7 +2,7 @@ package de.fiduciagad.hackathon.superteam.server;
 
 import java.io.File;
 
-import de.fiduciagad.hackathon.superteam.server.controllers.WatsonProvider;
+import de.fiduciagad.sharea.server.other.WatsonProvider;
 
 public class TestMe {
 
