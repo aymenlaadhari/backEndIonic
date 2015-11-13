@@ -1,39 +1,36 @@
-package de.fiduciagad.sharea.server.persistence;
+package de.fiduciagad.sharea.server.persistence.generic;
 
-import java.io.IOException;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
-import org.apache.commons.io.IOUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.lightcouch.CouchDbException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Service;
 
 import com.cloudant.client.api.CloudantClient;
 import com.cloudant.client.api.Database;
-import com.cloudant.client.api.model.Response;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
-import de.fiduciagad.sharea.server.dto.Person;
-
 @Service
+@Scope("singleton")
 @PropertySource("classpath:de/fiduciagad/sharea/server/config/cloudant.properties")
 public class DatabaseProvider {
 	private static final Log log = LogFactory.getLog(DatabaseProvider.class);
 
 	private CloudantClient cloudant = null;
 	private Database db = null;
-	
+
 	private static final String ENCODING = "UTF-8";
-	
+
 	@Value("${cloudant.dbname}")
 	private String databaseName = "todos";
 	@Value("${cloudant.url}")
@@ -56,7 +53,6 @@ public class DatabaseProvider {
 		}
 		getDB();
 	}
-
 
 	private CloudantClient createClient() {
 		/*
@@ -96,29 +92,14 @@ public class DatabaseProvider {
 			password = obj.get("password").getAsString();
 			url = obj.get("url").getAsString();
 
-		} 
+		}
 
 		try {
 			return new CloudantClient(url, user, password);
-			
+
 		} catch (CouchDbException e) {
 			throw new RuntimeException("Unable to connect to repository", e);
 		}
-	}
-	
-	public String find(String id){
-		String theString = null;
-		try {
-			theString = IOUtils.toString(db.find(id), ENCODING);
-		} catch (IOException e) {
-			log.error("Fehler beim Umformen des Strings aus der CloudantDB");
-		}	
-		return theString;
-	}
-	
-	public String push(Person  t){
-		Response resonse = db.post(t);
-		return resonse.getId();
 	}
 
 	public Database getDB() {

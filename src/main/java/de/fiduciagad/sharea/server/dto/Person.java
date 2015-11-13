@@ -1,6 +1,6 @@
 package de.fiduciagad.sharea.server.dto;
 
-public class Person {
+public class Person{
 	public String name;
 	// public String abteilung;
 	// public int aktivitaetsindex;

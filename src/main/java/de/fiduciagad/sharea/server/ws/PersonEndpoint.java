@@ -1,9 +1,6 @@
 package de.fiduciagad.sharea.server.ws;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.concurrent.atomic.AtomicLong;
 
 import org.apache.commons.logging.Log;
@@ -16,11 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.cloudant.client.api.Database;
-import com.google.gson.Gson;
-
 import de.fiduciagad.sharea.server.dto.Person;
-import de.fiduciagad.sharea.server.persistence.DatabaseProvider;
+import de.fiduciagad.sharea.server.persistence.dao.PersonDaoIf;
 
 @RestController
 public class PersonEndpoint {
@@ -30,27 +24,20 @@ public class PersonEndpoint {
 	private static final String template = "Hello: %s";
 	private final AtomicLong counter = new AtomicLong();
 	
-	private Gson gson = new Gson();
-	
 	@Autowired
-	private DatabaseProvider databaseProvider;
-
+	private PersonDaoIf personDao;
+	
+	
+	
 	@CrossOrigin
 	@RequestMapping(value = "/personen", method = RequestMethod.GET)
 	@ResponseBody
-	public Person getPerson(@RequestParam(value = "name", required = false, defaultValue = "Stranger") String name) {
+	public Person getPerson(@RequestParam(value = "name", required = false, defaultValue = "Stranger") String name) throws IOException {
 		
-		Person peter = new Person("Peter");
-		
-		String id = databaseProvider.push(peter);
-
-		String personString = databaseProvider.find(id);
-		
-		Person person = gson.fromJson(personString, Person.class);
+		Person person = (Person) personDao.readById("899cb7bfda45b838226232aa62d48288",Person.class);
 		
 		return person;
 	}
-	
 	
 	
 //	 @CrossOrigin
