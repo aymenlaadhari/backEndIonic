@@ -36,20 +36,21 @@ public class WatsonProvider {
 		SpeechToText service = new SpeechToText();
 
 		String VCAP_SERVICES = System.getenv("VCAP_SERVICES");
+		String CLOUDANT_CONFIG_KEY = System.getenv("CLOUDANT_CONFIG_KEY");
 
 		if (VCAP_SERVICES != null) {
 			JsonObject obj = (JsonObject) new JsonParser().parse(VCAP_SERVICES);
 			Entry<String, JsonElement> dbEntry = null;
 			Set<Entry<String, JsonElement>> entries = obj.entrySet();
 			for (Entry<String, JsonElement> eachEntry : entries) {
-				if (eachEntry.getKey().equals("speech_to_text")) {
+				if (eachEntry.getKey().equals(CLOUDANT_CONFIG_KEY)) {
 					dbEntry = eachEntry;
 					break;
 				}
 			}
 			if (dbEntry == null) {
 				throw new RuntimeException(
-						"Could not find speech_to_text key in VCAP_SERVICES env variable");
+						"Could not find " + CLOUDANT_CONFIG_KEY + " key in VCAP_SERVICES.");
 			}
 
 			obj = (JsonObject) ((JsonArray) dbEntry.getValue()).get(0);
@@ -61,7 +62,7 @@ public class WatsonProvider {
 
 			service.setUsernameAndPassword(user, password);
 		} else {
-			throw new RuntimeException("VCAP_SERVICES not found");
+			throw new RuntimeException("VCAP_SERVICES or CLOUDANT_CONFIG_KEY not found in environment variables.");
 		}
 
 		return service;
