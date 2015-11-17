@@ -34,7 +34,7 @@ public class PersonEndpoint {
 	@ResponseBody
 	public Person getPerson(@RequestParam(value = "name", required = false, defaultValue = "Stranger") String name) throws IOException {
 		
-		Person person = (Person) personDao.readById("899cb7bfda45b838226232aa62d48288",Person.class);
+		Person person = personDao.readById("899cb7bfda45b838226232aa62d48288");
 		
 		return person;
 	}

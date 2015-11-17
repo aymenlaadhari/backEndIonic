@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 @Service
 public interface Dao<T> {
 
-	public T readById(String id, Class<T> requiredType);
+	public T readById(String id);
 
 	
 

@@ -1,8 +1,9 @@
 package de.fiduciagad.sharea.server.persistence.dao;
 
+import de.fiduciagad.sharea.server.dto.Person;
 import de.fiduciagad.sharea.server.persistence.generic.Dao;
 
-public interface PersonDaoIf extends Dao{
+public interface PersonDaoIf extends Dao<Person>{
 
 
 }
