@@ -6,8 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.cloudant.client.api.model.Response;
 import com.google.gson.Gson;
 
-import de.fiduciagad.sharea.server.dto.Person;
-
 public class DaoImpl<T> implements Dao<T> {
 
 	@Autowired
@@ -24,8 +22,6 @@ public class DaoImpl<T> implements Dao<T> {
 	public T get() {
 		return t;
 	}
-	
-	
 
 	public DaoImpl(Class<T> type) {
 		super();
