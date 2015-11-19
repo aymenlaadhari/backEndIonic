@@ -37,7 +37,7 @@ public class DaoImpl<T> implements Dao<T> {
 	public T readById(String id) {
 		String jsonString = null;
 		try {
-			jsonString = IOUtils.toString(databaseProvider.getDB().find(id), ENCODING);
+			jsonString = IOUtils.toString(databaseProvider.getDatabase().find(id), ENCODING);
 		} catch (Exception e) {
 			throw new RuntimeException(e);
 		}
@@ -48,7 +48,7 @@ public class DaoImpl<T> implements Dao<T> {
 	}
 	
 	public String push(T t) {
-		Response resonse = databaseProvider.getDB().post(t);
+		Response resonse = databaseProvider.getDatabase().post(t);
 		return resonse.getId();
 	}
 
