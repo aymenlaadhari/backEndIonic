@@ -1,15 +1,15 @@
 package de.fiduciagad.sharea.server.persistence.generic;
 
-import java.lang.reflect.Type;
-import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.cloudant.client.api.model.Document;
 import com.cloudant.client.api.model.Response;
+import com.cloudant.client.api.views.AllDocsResponse;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
 public class DaoImpl<T> implements Dao<T> {
 
@@ -49,22 +49,25 @@ public class DaoImpl<T> implements Dao<T> {
 
 		return entity;
 	}
+	
+	//TODO: Nur für Testzwecke
+	@Override
+	public List<Document> getAllDocs(){
+		try {
+			AllDocsResponse allDocs = databaseProvider.getDatabase().getAllDocsRequestBuilder().build().getResponse();
+			List<Document> listeDocs = allDocs.getDocs();
+			return listeDocs;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return null;		
+	}
 
 	@Override
 	public List<T> read(String query) {
-		String jsonString = null;
-		try {
-			jsonString = IOUtils.toString(databaseProvider.getDatabase().search(jsonString).queryForStream(query),
-					ENCODING);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
 
-		Type listType = new TypeToken<ArrayList<T>>() {
-		}.getType();
-		List<T> listEntites = new Gson().fromJson(jsonString, listType);
-
-		return listEntites;
+		return databaseProvider.getDatabase().findByIndex(query, type);
 
 	}
 
