@@ -1,9 +1,12 @@
-package de.fiduciagad.sharea.rest;
+package de.fiduciagad.sharea.server.rest;
 
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.fiduciagad.sharea.server.configuration.AppConfig;
@@ -17,17 +20,16 @@ public class CredentialsController {
 	private DBCredentials credentials;
 	private final AtomicLong counter = new AtomicLong();
 	
-	@RequestMapping("/credentials")
-	public DBCredentials getCredentials(@RequestParam(value="user", defaultValue="Test")String user, @RequestParam(value="password", defaultValue="Test")String pw){
+	@CrossOrigin
+	@RequestMapping(value = "/credentials", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public DBCredentials getCredentials(@RequestParam(value="user",required = false)String user, @RequestParam(value="password", required = false)String pw){
+		
+		System.out.println("entered credentials Service");
 		
 		dbconf =new AppConfig().createDatabaseConfiguration();
 		
-		
-		if(user.equals("Test")&&pw.equals("Test"))
-			credentials = new DBCredentials(counter.getAndIncrement(), "TestURL");
-		else
 			credentials = new DBCredentials(counter.getAndIncrement(), dbconf.getUrl());
-		
 		
 		return credentials;
 	}

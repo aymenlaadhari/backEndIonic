@@ -40,7 +40,7 @@ public class AppConfig {
 				String username = credentials.get("username").getAsString();
 				String password = credentials.get("password").getAsString();
 				String url = credentials.get("url").getAsString();
-
+			
 				return new DatabaseConfiguration(username, password, CLOUDANT_DB_NAME,url);
 			} else {
 				throw new RuntimeException("Could not find " + CLOUDANT_CONFIG_KEY + " key in " + VCAP_SERVICES + ".");
