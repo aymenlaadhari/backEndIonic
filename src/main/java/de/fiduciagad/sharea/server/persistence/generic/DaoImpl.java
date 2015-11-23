@@ -1,6 +1,7 @@
 package de.fiduciagad.sharea.server.persistence.generic;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
@@ -16,17 +17,7 @@ public class DaoImpl<T> implements Dao<T> {
 	@Autowired
 	private DatabaseProvider databaseProvider;
 
-	private T t;
-
 	private Class<T> type;
-
-	public void set(T t) {
-		this.t = t;
-	}
-
-	public T get() {
-		return t;
-	}
 
 	public DaoImpl(Class<T> type) {
 		super();
@@ -49,19 +40,33 @@ public class DaoImpl<T> implements Dao<T> {
 
 		return entity;
 	}
-	
-	//TODO: Nur für Testzwecke
+
+	// TODO: Nur für Testzwecke
 	@Override
-	public List<Document> getAllDocs(){
+	public List<Document> getAllDocs() {
 		try {
-			AllDocsResponse allDocs = databaseProvider.getDatabase().getAllDocsRequestBuilder().build().getResponse();
+			AllDocsResponse allDocs = databaseProvider.getDatabase().getAllDocsRequestBuilder().includeDocs(true)
+					.build().getResponse();
 			List<Document> listeDocs = allDocs.getDocs();
 			return listeDocs;
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			throw new RuntimeException(e);
 		}
-		return null;		
+	}
+
+	@Override
+	public String create(T t) {
+		Response r = databaseProvider.getDatabase().save(t);
+		return r.getId();
+	}
+
+	@Override
+	public List<String> create(List<T> t) {
+		List<String> listIds = new ArrayList<String>();
+		for (T iterateableT : t) {
+			listIds.add(databaseProvider.getDatabase().save(iterateableT).getId());
+		}
+		return listIds;
 	}
 
 	@Override
@@ -69,11 +74,6 @@ public class DaoImpl<T> implements Dao<T> {
 
 		return databaseProvider.getDatabase().findByIndex(query, type);
 
-	}
-
-	public String push(T t) {
-		Response resonse = databaseProvider.getDatabase().post(t);
-		return resonse.getId();
 	}
 
 }

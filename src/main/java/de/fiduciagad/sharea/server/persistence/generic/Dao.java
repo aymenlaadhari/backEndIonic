@@ -13,9 +13,11 @@ public interface Dao<T> {
 
 	public List<T> read(String query);
 
-	//TODO: Nur für Testzwecke
+	// TODO: Nur für Testzwecke
 	public List<Document> getAllDocs();
 
-	
+	public String create(T t);
+
+	public List<String> create(List<T> t);
 
 }

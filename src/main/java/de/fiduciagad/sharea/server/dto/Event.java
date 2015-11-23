@@ -1,9 +1,6 @@
 package de.fiduciagad.sharea.server.dto;
 
-import java.time.LocalDateTime;
 import java.util.List;
-
-import de.fiduciagad.sharea.server.enums.Location;
 
 public class Event {
 
@@ -11,6 +8,10 @@ public class Event {
 	private Location location;
 	private List<Person> subscriber;
 	private String dateTime;
+
+	public Event() {
+
+	}
 
 	public Event(String name, Location location, List<Person> subscriber, String dateTime) {
 		super();
