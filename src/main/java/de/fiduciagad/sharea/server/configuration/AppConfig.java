@@ -15,7 +15,7 @@ import com.google.gson.JsonParser;
 @Profile("cloud")
 @Configuration
 public class AppConfig {
-	
+
 	@Autowired
 	Environment env;
 
@@ -36,12 +36,12 @@ public class AppConfig {
 				}
 				JsonObject credentialsObject = dbEntry.getAsJsonObject();
 				JsonObject credentials = credentialsObject.get("credentials").getAsJsonObject();
-				
+
 				String username = credentials.get("username").getAsString();
 				String password = credentials.get("password").getAsString();
 				String url = credentials.get("url").getAsString();
-			
-				return new DatabaseConfiguration(username, password, CLOUDANT_DB_NAME,url);
+
+				return new DatabaseConfiguration(username, password, CLOUDANT_DB_NAME, url);
 			} else {
 				throw new RuntimeException("Could not find " + CLOUDANT_CONFIG_KEY + " key in " + VCAP_SERVICES + ".");
 			}
