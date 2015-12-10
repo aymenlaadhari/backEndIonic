@@ -8,8 +8,10 @@ import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.cloudant.client.api.model.Document;
+import com.cloudant.client.api.model.FindByIndexOptions;
 import com.cloudant.client.api.model.Response;
 import com.cloudant.client.api.views.AllDocsResponse;
+import com.cloudant.client.api.views.ViewRequestBuilder;
 import com.google.gson.Gson;
 
 public class DaoImpl<T> implements Dao<T> {
@@ -74,6 +76,18 @@ public class DaoImpl<T> implements Dao<T> {
 
 		return databaseProvider.getDatabase().findByIndex(query, type);
 
+	}
+
+	@Override
+	public List<T> read(String query, FindByIndexOptions findByIndexOptions) {
+
+		return databaseProvider.getDatabase().findByIndex(query, type, findByIndexOptions);
+	}
+
+	@Override
+	public ViewRequestBuilder getViewRequestBuilder(String designDoc, String viewName) {
+		ViewRequestBuilder vrb = databaseProvider.getDatabase().getViewRequestBuilder(designDoc, viewName);
+		return vrb;
 	}
 
 }

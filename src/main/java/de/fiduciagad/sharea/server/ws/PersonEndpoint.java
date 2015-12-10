@@ -1,10 +1,7 @@
 package de.fiduciagad.sharea.server.ws;
 
 import java.io.IOException;
-import java.util.concurrent.atomic.AtomicLong;
 
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,10 +16,6 @@ import de.fiduciagad.sharea.server.persistence.dao.PersonDaoIf;
 @RestController
 public class PersonEndpoint {
 
-	private static final Log log = LogFactory.getLog(PersonEndpoint.class);
-
-	private static final String template = "Hello: %s";
-	private final AtomicLong counter = new AtomicLong();
 	
 	@Autowired
 	private PersonDaoIf personDao;

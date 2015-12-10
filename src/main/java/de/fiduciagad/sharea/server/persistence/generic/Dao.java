@@ -5,6 +5,10 @@ import java.util.List;
 import org.springframework.stereotype.Service;
 
 import com.cloudant.client.api.model.Document;
+import com.cloudant.client.api.model.FindByIndexOptions;
+import com.cloudant.client.api.views.ViewRequestBuilder;
+import com.cloudant.client.api.views.ViewResponse;
+import com.cloudant.client.api.views.Key.ComplexKey;
 
 @Service
 public interface Dao<T> {
@@ -19,5 +23,9 @@ public interface Dao<T> {
 	public String create(T t);
 
 	public List<String> create(List<T> t);
+
+	public List<T> read(String query, FindByIndexOptions findByIndexOptions);
+
+	public ViewRequestBuilder getViewRequestBuilder(String designDoc, String viewName);
 
 }
