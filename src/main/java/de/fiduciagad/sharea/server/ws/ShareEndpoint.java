@@ -33,5 +33,14 @@ public class ShareEndpoint {
 		log.info(listShares.size() + " elements for location: " + shareInputDTO.getPlaceFrom() + " found.");
 		return listShares;
 	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "/api/v1/getShareByID", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public Share getShareSuggestions(@RequestBody String _id) throws IOException {
+		Share share = shareDao.getShareByID(_id);
+		log.info(share.get_id()+" found.");
+		return share;
+	}
 
 }

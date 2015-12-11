@@ -17,6 +17,7 @@ import com.cloudant.client.api.views.ViewResponse;
 
 import de.fiduciagad.sharea.server.dto.Share;
 import de.fiduciagad.sharea.server.persistence.generic.DaoImpl;
+import de.fiduciagad.sharea.server.persistence.generic.DatabaseProvider;
 
 @Component
 public class ShareDaoImpl extends DaoImpl<Share> implements ShareDaoIf {
@@ -67,6 +68,13 @@ public class ShareDaoImpl extends DaoImpl<Share> implements ShareDaoIf {
 		}
 
 		return returnList;
+	}
+
+	@Override
+	public Share getShareByID(String _id) {
+		
+		
+		return readById(_id);
 	}
 
 }
