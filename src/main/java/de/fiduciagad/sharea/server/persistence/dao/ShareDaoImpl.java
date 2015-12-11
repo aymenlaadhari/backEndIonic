@@ -2,7 +2,6 @@ package de.fiduciagad.sharea.server.persistence.dao;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.commons.logging.Log;
@@ -64,5 +63,12 @@ public class ShareDaoImpl extends DaoImpl<Share> implements ShareDaoIf {
 
 		return vr.getValues();
 	}
-	
+
+	@Override
+	public Share getShareByID(String _id) {
+		
+		
+		return readById(_id);
+	}
+
 }
