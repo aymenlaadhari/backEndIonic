@@ -10,6 +10,4 @@ public interface ShareDaoIf extends Dao<Share>{
 	
 	public List<Share> readSharesByPlaceFrom(String location, Integer limit);
 	
-	public Share getShareByID(String _id);
-
 }

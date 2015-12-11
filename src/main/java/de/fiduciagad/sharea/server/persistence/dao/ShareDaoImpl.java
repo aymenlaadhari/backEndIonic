@@ -64,11 +64,4 @@ public class ShareDaoImpl extends DaoImpl<Share> implements ShareDaoIf {
 		return vr.getValues();
 	}
 
-	@Override
-	public Share getShareByID(String _id) {
-		
-		
-		return readById(_id);
-	}
-
 }
