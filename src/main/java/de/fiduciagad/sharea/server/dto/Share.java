@@ -14,7 +14,7 @@ public class Share {
 	public String timeUntil;
 	
 	private String ownerId;
-	private String shareWith;
+	private Person[] shareWith;
 	
 	public int maxmember;
 	
@@ -86,14 +86,6 @@ public class Share {
 		this.ownerId = ownerId;
 	}
 
-	public String getShareWith() {
-		return shareWith;
-	}
-
-	public void setShareWith(String shareWith) {
-		this.shareWith = shareWith;
-	}
-
 	public int getMaxmember() {
 		return maxmember;
 	}
@@ -128,6 +120,14 @@ public class Share {
 
 	public void set_id(String _id) {
 		this._id = _id;
+	}
+
+	public Person[] getShareWith() {
+		return shareWith;
+	}
+
+	public void setShareWith(Person[] shareWith) {
+		this.shareWith = shareWith;
 	}
 
 }

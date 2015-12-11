@@ -5,6 +5,7 @@ public class Person {
 	private String _id;
 	private String _rev;
 	private String name;
+	private String type;
 
 	public String getName() {
 		return name;
@@ -36,6 +37,14 @@ public class Person {
 
 	public void set_rev(String _rev) {
 		this._rev = _rev;
+	}
+
+	public String getType() {
+		return type;
+	}
+
+	public void setType(String type) {
+		this.type = type;
 	}
 
 }
