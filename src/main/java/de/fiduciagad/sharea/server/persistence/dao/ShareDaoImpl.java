@@ -38,7 +38,7 @@ public class ShareDaoImpl extends DaoImpl<Share> implements ShareDaoIf {
 
 		//@formatter:off
 		//generating the view request
-		UnpaginatedRequestBuilder<ComplexKey,String> vrb = getViewRequestBuilder("share", "possibleShares").newRequest(Key.Type.COMPLEX,String.class);
+		UnpaginatedRequestBuilder<ComplexKey,Share> vrb = getViewRequestBuilder("share", "possibleShares").newRequest(Key.Type.COMPLEX,Share.class);
 		
 		//Adding start and endKey
 		vrb.startKey(Key.complex(location).add(dateTimeNow.format(DateTimeFormatter.ISO_LOCAL_DATE)))
@@ -51,22 +51,18 @@ public class ShareDaoImpl extends DaoImpl<Share> implements ShareDaoIf {
 			vrb.limit(DEFAULT_LIMIT);
 		}
 		//Build the request
-		ViewRequest<ComplexKey, String> request = vrb.build();
+		ViewRequest<ComplexKey, Share> request = vrb.build();
 		//@formatter:on
 		
 		//get Response
-		ViewResponse<ComplexKey, String> vr = null;
+		ViewResponse<ComplexKey, Share> vr = null;
 		try {
 			vr = request.getResponse();
 		} catch (Exception e) {
 			log.error("Returned error, when requesting View", e);
 		}
-		List<Share> returnList = new ArrayList<Share>();
-		for (String id : vr.getValues()) {
-			returnList.add(new Share(id));
-		}
 
-		return returnList;
+		return vr.getValues();
 	}
-
+	
 }
