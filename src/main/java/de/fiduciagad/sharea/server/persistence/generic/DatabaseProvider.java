@@ -33,7 +33,7 @@ public class DatabaseProvider {
 						.username(dbConfiguration.getUsername())//
 						.password(dbConfiguration.getPassword())//
 						.build();
-				database = client.database(dbConfiguration.getDatabase(), false);
+				database = client.database(dbConfiguration.getDatabase(), true);
 			}
 		}
 	}
