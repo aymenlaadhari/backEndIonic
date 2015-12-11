@@ -3,6 +3,7 @@ package de.fiduciagad.sharea.server.dto;
 public class Share {
 
 	private String _id;
+	private String _rev;
 	private String title;
 	private String content;
 	private String icon;
@@ -128,6 +129,14 @@ public class Share {
 
 	public void setShareWith(Person[] shareWith) {
 		this.shareWith = shareWith;
+	}
+
+	public String get_rev() {
+		return _rev;
+	}
+
+	public void set_rev(String _rev) {
+		this._rev = _rev;
 	}
 
 }

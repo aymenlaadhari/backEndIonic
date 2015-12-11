@@ -3,6 +3,7 @@ package de.fiduciagad.sharea.server.dto;
 public class Category {
 
 	private String _id;
+	private String _rev;
 	private String title;
 	public String get_id() {
 		return _id;
@@ -58,5 +59,12 @@ public class Category {
 	private CategoryConfig config;
 	
 	private String type;
+	public String get_rev() {
+		return _rev;
+	}
+
+	public void set_rev(String _rev) {
+		this._rev = _rev;
+	}
 	
 }
