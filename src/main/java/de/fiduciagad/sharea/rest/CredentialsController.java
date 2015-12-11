@@ -1,4 +1,4 @@
-package de.fiduciagad.sharea.server.rest;
+package de.fiduciagad.sharea.rest;
 
 import java.util.Collections;
 import java.util.Map;
