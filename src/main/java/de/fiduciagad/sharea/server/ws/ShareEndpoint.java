@@ -42,5 +42,15 @@ public class ShareEndpoint {
 		log.info(share.get_id()+" found.");
 		return share;
 	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "/api/v1/saveShare", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public String getShareSuggestions(@RequestBody Share share) throws IOException {
+		
+		String id = shareDao.create(share);
+		log.info(share.get_id()+" found.");
+		return id;
+	}
 
 }
