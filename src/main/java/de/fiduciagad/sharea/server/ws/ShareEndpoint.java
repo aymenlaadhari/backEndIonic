@@ -44,7 +44,7 @@ public class ShareEndpoint {
 	}
 	
 	@CrossOrigin
-	@RequestMapping(value = "/api/v1/saveShare", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/storeShare", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public String getShareSuggestions(@RequestBody Share share) throws IOException {
 		
