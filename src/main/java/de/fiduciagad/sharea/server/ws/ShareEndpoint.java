@@ -26,7 +26,7 @@ public class ShareEndpoint {
 	private ShareDaoIf shareDao;
 
 	@CrossOrigin
-	@RequestMapping(value = "/shareSuggestions", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/shareSuggestions", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public List<Share> getShareSuggestions(@RequestBody(required=true) ShareInputDTO shareInputDTO) throws IOException {
 		List<Share> listShares = shareDao.readSharesByPlaceFrom(shareInputDTO.getPlaceFrom(),shareInputDTO.getLimit());
