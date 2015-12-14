@@ -37,7 +37,7 @@ public class ShareEndpoint {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/getShareByID", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Share getShareSuggestions(@RequestBody(required=true) String _id) throws IOException {
+	public Share getShareByID(@RequestBody(required=true) String _id) throws IOException {
 		Share share = shareDao.readById(_id);
 		log.info(share.get_id()+" found.");
 		return share;
