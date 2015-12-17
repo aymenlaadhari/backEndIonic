@@ -1,7 +1,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>de.fiduciagad.hackathon.superteam</groupId>
+	<groupId>de.fiduciagad.sharea</groupId>
 	<artifactId>server</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 
@@ -153,19 +153,13 @@
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-data-mongodb</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>spring-service-connector</artifactId>
-			<version>0.9.8</version>
-		</dependency>
 		<!-- If you intend to deploy the app on Cloud Foundry, add the following -->
-		<dependency>
-			<groupId>org.springframework.cloud</groupId>
-			<artifactId>cloudfoundry-connector</artifactId>
-			<version>0.9.8</version>
-		</dependency>
 		<dependency>
 			<groupId>com.cloudant</groupId>
 			<artifactId>cloudant-client</artifactId>
@@ -199,6 +193,35 @@
 			<groupId>com.neovisionaries</groupId>
 			<artifactId>nv-i18n</artifactId>
 			<version>1.14</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
+			<version>18.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-mail</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>
+				spring-cloud-spring-service-connector
+			</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>net.bluemix</groupId>
+			<artifactId>bluemix-cloud-connectors-cloudfoundry</artifactId>
+			<version>0.0.1.RC5</version>
+		</dependency>
+		<dependency>
+			<groupId>net.bluemix</groupId>
+			<artifactId>bluemix-cloud-connectors-local</artifactId>
+			<version>0.0.1.RC5</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-cloudfoundry-connector</artifactId>
 		</dependency>
 	</dependencies>
 

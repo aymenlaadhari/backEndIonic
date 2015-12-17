@@ -1,4 +1,4 @@
-package de.fiduciagad.sharea.rest;
+package de.fiduciagad.sharea.server.rest;
 
 import java.io.ByteArrayOutputStream;
 import java.io.UnsupportedEncodingException;
