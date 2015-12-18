@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.ibm.watson.developer_cloud.service.InternalServerErrorException;
-
 import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
 import de.fiduciagad.sharea.server.data.repository.CategoryConfigRepository;
@@ -86,7 +84,7 @@ public class DatabaseController {
 			personRepository.initStandardDesignDocument();
 			shareRepository.initStandardDesignDocument();
 		} catch (Exception e) {
-			throw new InternalServerErrorException("Could not clean database.", e);
+			throw new IllegalStateException("Could not clean database.", e);
 		}
 
 		return Collections.singletonMap("success", Boolean.TRUE);

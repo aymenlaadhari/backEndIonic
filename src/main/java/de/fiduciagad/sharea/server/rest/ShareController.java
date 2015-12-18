@@ -10,12 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.fiduciagad.sharea.server.data.access.ShareManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
+import de.fiduciagad.sharea.server.rest.dto.FindShares;
 
 @RestController
 public class ShareController {
@@ -34,11 +34,10 @@ public class ShareController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "/api/v1/share", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/findShares", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public List<Share> findShares(@RequestParam(required = true) String location,
-			@RequestParam(required = true) int limit) {
-		return shareManager.findByStartLocation(location, limit);
+	public List<Share> findShares(@RequestBody(required = true) FindShares findShares) {
+		return shareManager.findByStartLocation(findShares);
 	}
 
 	@CrossOrigin

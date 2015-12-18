@@ -1,11 +1,22 @@
 package de.fiduciagad.sharea.server.rest.dto;
 
+import javax.validation.constraints.NotNull;
+
 public class NewAccount {
 
+	@NotNull
 	private String email;
+
+	@NotNull
 	private String password;
+
+	@NotNull
 	private String realname;
+
+	@NotNull
 	private String deviceName;
+
+	@NotNull
 	private String deviceIdentifier;
 
 	public NewAccount() {

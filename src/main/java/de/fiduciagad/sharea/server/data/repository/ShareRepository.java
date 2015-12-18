@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
+import de.fiduciagad.sharea.server.rest.dto.FindShares;
 
 @Component
 @View(name = "all", map = "function(doc) { if (doc.docType === 'Share') emit( null, doc._id )}")
@@ -31,15 +32,15 @@ public class ShareRepository extends CouchDbRepositorySupport<Share> {
 	}
 
 	@View(name = "by_startLocation_by_date", map = "classpath:/de/fiduciagad/sharea/server/data/repository/functions/by_location_by_date.js")
-	public List<Share> findByStartLocation(String startLocation, int limit) {
+	public List<Share> findByStartLocation(FindShares findShares) {
 		// From now till the future!
 		Calendar nextYear = Calendar.getInstance();
 		nextYear.add(Calendar.YEAR, 1);
 		Date now = new Date();
-		ComplexKey startKey = ComplexKey.of(startLocation, now);
-		ComplexKey endKey = ComplexKey.of(startLocation, nextYear);
+		ComplexKey startKey = ComplexKey.of(findShares.getStartLocation(), now);
+		ComplexKey endKey = ComplexKey.of(findShares.getStartLocation(), nextYear);
 
-		PageRequest pageRequest = PageRequest.firstPage(limit);
+		PageRequest pageRequest = PageRequest.firstPage(findShares.getLimit());
 		ViewQuery query = new ViewQuery().designDocId(stdDesignDocumentId).viewName("by_startLocation_by_date")
 				.includeDocs(true).startKey(startKey).endKey(endKey);
 

@@ -85,6 +85,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// .antMatchers("/api/v1/data").permitAll()//
 				.antMatchers("/api/v1/account").permitAll()//
 				.antMatchers("/api/v1/token").permitAll()//
+				// TODO1: Only allow read access to shares
 				.antMatchers("/api/v1/share/*").permitAll()//
 				.antMatchers("/logout").permitAll()//
 				.anyRequest().authenticated().and()//
