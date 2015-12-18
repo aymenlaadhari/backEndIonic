@@ -9,6 +9,7 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -48,7 +49,7 @@ public class EventController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/event/{id}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Event getEvent(@RequestParam(required = true) String id) {
+	public Event getEvent(@PathVariable String id) {
 		return eventManager.get(id);
 	}
 

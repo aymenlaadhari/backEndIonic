@@ -5,10 +5,10 @@ import javax.servlet.http.HttpServletResponse;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,7 +29,7 @@ public class PersonController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/person/{id}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Person getPerson(@RequestParam(required = true) String id) {
+	public Person getPerson(@PathVariable String id) {
 		return personRepository.get(id);
 	}
 
