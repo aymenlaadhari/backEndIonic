@@ -23,12 +23,13 @@ public class ShareManager {
 		shareRepository.add(share);
 	}
 
-	public void create(String title, String description, Set<String> categoryIds, String startLocation,
+	public Share create(String title, String description, Set<String> categoryIds, String startLocation,
 			String endLocation, Date startDate, Date endDate, String icon, String owningPersonId,
 			Set<String> participantIds, int participantLimit) {
 		Share share = new Share(title, description, categoryIds, icon, startLocation, endLocation, startDate, endDate,
 				owningPersonId, participantIds, participantLimit);
 		shareRepository.add(share);
+		return share;
 	}
 
 	public List<Share> findByStartLocation(String startLocation, int limit) {
