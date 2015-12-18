@@ -9,7 +9,6 @@ public class Comment extends CouchDbDocument {
 	private static final long serialVersionUID = 1L;
 	private String authorId;
 	private String text;
-	private String shareId;
 
 	@JsonProperty("docType")
 	@TypeDiscriminator(value = "doc.docType === 'Comment'")
@@ -36,14 +35,6 @@ public class Comment extends CouchDbDocument {
 
 	public String getDocType() {
 		return docType;
-	}
-
-	public String getShareId() {
-		return shareId;
-	}
-
-	public void setShareId(String shareId) {
-		this.shareId = shareId;
 	}
 	
 	

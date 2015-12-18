@@ -1,7 +1,5 @@
 package de.fiduciagad.sharea.server.data.access;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -23,10 +21,6 @@ public class CommentManager {
 
 	public Comment get(String id) {
 		return commentRepository.get(id);
-	}
-	
-	public List<Comment> findByShares(String shareId) {
-		return commentRepository.findByShares(shareId);
 	}
 
 }
