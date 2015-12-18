@@ -22,7 +22,6 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.security.TokenAuthenticationFilter;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 
@@ -71,12 +70,6 @@ class CloudConfiguration extends AbstractCloudConfig {
 class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Autowired
-	private TokenEnabledUserDetailsService tokenEnabledUserDetailsService;
-
-	@Autowired
-	private AccessTokenRepository accessTokenRepository;
-
-	@Autowired
 	private TokenAuthenticationFilter tokenAuthenticationFilter;
 
 	@Override
@@ -92,6 +85,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// .antMatchers("/api/v1/data").permitAll()//
 				.antMatchers("/api/v1/account").permitAll()//
 				.antMatchers("/api/v1/token").permitAll()//
+				.antMatchers("/api/v1/share/*").permitAll()//
 				.antMatchers("/logout").permitAll()//
 				.anyRequest().authenticated().and()//
 				.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);

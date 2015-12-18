@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import de.fiduciagad.sharea.server.data.repository.ShareRepository;
-import de.fiduciagad.sharea.server.data.repository.dto.Category;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
 
 @Component
@@ -24,10 +23,10 @@ public class ShareManager {
 		shareRepository.add(share);
 	}
 
-	public void create(String title, String description, Category category, String startLocation, String endLocation,
-			Date startDate, Date endDate, String icon, String owningPersonId, Set<String> participantIds,
-			int participantLimit) {
-		Share share = new Share(title, description, category, icon, startLocation, endLocation, startDate, endDate,
+	public void create(String title, String description, Set<String> categoryIds, String startLocation,
+			String endLocation, Date startDate, Date endDate, String icon, String owningPersonId,
+			Set<String> participantIds, int participantLimit) {
+		Share share = new Share(title, description, categoryIds, icon, startLocation, endLocation, startDate, endDate,
 				owningPersonId, participantIds, participantLimit);
 		shareRepository.add(share);
 	}

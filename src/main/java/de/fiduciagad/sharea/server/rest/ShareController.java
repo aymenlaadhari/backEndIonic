@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.fiduciagad.sharea.server.data.access.ShareManager;
-import de.fiduciagad.sharea.server.data.repository.dto.Category;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
 
 @RestController
@@ -29,7 +28,7 @@ public class ShareController {
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, Object> createShare(@RequestParam(required = true) String title,
-			@RequestParam(required = true) String description, @RequestParam(required = true) Category category,
+			@RequestParam(required = true) String description, @RequestParam(required = true) Set<String> categoryIds,
 			@RequestParam(required = true) String startLocation, @RequestParam(required = true) String endLocation,
 			@RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
 			@RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate,
@@ -37,11 +36,11 @@ public class ShareController {
 			@RequestParam(required = true) Set<String> participantIds,
 			@RequestParam(required = true) int participantLimit) {
 
-		shareManager.create(title, description, category, startLocation, endLocation, startDate, endDate, icon,
+		shareManager.create(title, description, categoryIds, startLocation, endLocation, startDate, endDate, icon,
 				owningPersonId, participantIds, participantLimit);
 		// TODO ehm... if it doesn't throw an exception everything is cool?
 		// Hmm... maybe better error handling.
-		return Collections.singletonMap("success", true);
+		return Collections.singletonMap("id", true);
 	}
 
 	@CrossOrigin
