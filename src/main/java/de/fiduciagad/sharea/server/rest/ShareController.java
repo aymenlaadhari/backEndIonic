@@ -28,17 +28,14 @@ public class ShareController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> createShare(@RequestParam(name = "title", required = true) String title,
-			@RequestParam(name = "content", required = true) String description,
-			@RequestParam(name = "categoryId", required = true) Category category,
-			@RequestParam(name = "placeFrom", required = true) String startLocation,
-			@RequestParam(name = "placeTo", required = true) String endLocation,
-			@RequestParam(name = "timeFrom", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
-			@RequestParam(name = "timeUntil", required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate,
-			@RequestParam(name = "icon", required = true) String icon,
-			@RequestParam(name = "ownerId", required = true) String owningPersonId,
-			@RequestParam(name = "shareWith", required = true) Set<String> participantIds,
-			@RequestParam(name = "maxmember", required = true) int participantLimit) {
+	public Map<String, Object> createShare(@RequestParam(required = true) String title,
+			@RequestParam(required = true) String description, @RequestParam(required = true) Category category,
+			@RequestParam(required = true) String startLocation, @RequestParam(required = true) String endLocation,
+			@RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startDate,
+			@RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date endDate,
+			@RequestParam(required = true) String icon, @RequestParam(required = true) String owningPersonId,
+			@RequestParam(required = true) Set<String> participantIds,
+			@RequestParam(required = true) int participantLimit) {
 
 		shareManager.create(title, description, category, startLocation, endLocation, startDate, endDate, icon,
 				owningPersonId, participantIds, participantLimit);
