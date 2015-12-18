@@ -9,7 +9,6 @@ import org.springframework.stereotype.Component;
 
 import de.fiduciagad.sharea.server.data.repository.ShareRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
-import de.fiduciagad.sharea.server.rest.dto.FindShares;
 
 @Component
 public class ShareManager {
@@ -33,8 +32,8 @@ public class ShareManager {
 		return share;
 	}
 
-	public List<Share> findByStartLocation(FindShares findShares) {
-		return shareRepository.findByStartLocation(findShares);
+	public List<Share> findByStartLocation(String startLocation, int limit) {
+		return shareRepository.findByStartLocation(startLocation, limit);
 	}
 
 	public Share get(String id) {

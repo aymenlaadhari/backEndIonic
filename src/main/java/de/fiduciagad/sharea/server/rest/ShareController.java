@@ -27,7 +27,7 @@ public class ShareController {
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, Object> createShare(@RequestBody(required = true) Share share) {
-		
+
 		shareManager.create(share);
 
 		return Collections.singletonMap("id", share.getId());
@@ -37,7 +37,7 @@ public class ShareController {
 	@RequestMapping(value = "/api/v1/findShares", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public List<Share> findShares(@RequestBody(required = true) FindShares findShares) {
-		return shareManager.findByStartLocation(findShares);
+		return shareManager.findByStartLocation(findShares.getStartLocation(), findShares.getLimit());
 	}
 
 	@CrossOrigin
