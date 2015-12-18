@@ -4,13 +4,14 @@ import java.security.GeneralSecurityException;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,6 +22,7 @@ import de.fiduciagad.sharea.server.data.access.AccountManager;
 import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
 import de.fiduciagad.sharea.server.data.repository.dto.Person;
+import de.fiduciagad.sharea.server.rest.dto.NewAccount;
 
 @RestController
 public class AccountController {
@@ -45,20 +47,26 @@ public class AccountController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/account", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> createUser(@RequestParam(required = true) String email,
-			@RequestParam(required = true) String password, @RequestParam(required = true) String realname,
-			@RequestParam(required = true) String deviceName, @RequestParam(required = true) String deviceIdentifier) {
+	public Map<String, Object> createAccout(@RequestBody(required = true) NewAccount newAccount) {
 
-		if (accountManager.getAccountByEmail(email) != null) {
+		if (accountManager.getAccountByEmail(newAccount.getEmail()) != null) {
 			throw new DuplicateKeyException("User already exists.");
 		}
 
+		// TODO Beautify email vaidation
+		if (!EmailValidator.getInstance().isValid(newAccount.getEmail())) {
+			throw new IllegalArgumentException("The email address is not valid.");
+		}
+		if (!newAccount.getEmail().endsWith("@fiduciagad.de")) {
+			throw new IllegalArgumentException("You have to use an @fiduciagad.de e-mail address.");
+		}
+
 		try {
-			Account account = new Account(email, passwordEncoder.encode(password));
-			Person person = new Person(realname);
+			Account account = new Account(newAccount.getEmail(), passwordEncoder.encode(newAccount.getPassword()));
+			Person person = new Person(newAccount.getRealname());
 			account.getPersons().add(person);
-			AccessToken currentToken = AccessToken.createRandom(deviceName, deviceIdentifier);
-			currentToken.setDeviceName(deviceName);
+			AccessToken currentToken = AccessToken.createRandom(newAccount.getDeviceName(),
+					newAccount.getDeviceIdentifier());
 			account.getAccessTokens().add(currentToken);
 			accountManager.create(account);
 
