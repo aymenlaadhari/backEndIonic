@@ -49,16 +49,15 @@ public class AccountController {
 	@ResponseBody
 	public Map<String, Object> createAccout(@RequestBody(required = true) NewAccount newAccount) {
 
-		if (accountManager.getAccountByEmail(newAccount.getEmail()) != null) {
-			throw new DuplicateKeyException("User already exists.");
-		}
-
 		// TODO Beautify email vaidation
 		if (!EmailValidator.getInstance().isValid(newAccount.getEmail())) {
 			throw new IllegalArgumentException("The email address is not valid.");
 		}
 		if (!newAccount.getEmail().endsWith("@fiduciagad.de")) {
 			throw new IllegalArgumentException("You have to use an @fiduciagad.de e-mail address.");
+		}
+		if (accountManager.getAccountByEmail(newAccount.getEmail()) != null) {
+			throw new DuplicateKeyException("User already exists.");
 		}
 
 		try {
