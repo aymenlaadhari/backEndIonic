@@ -39,5 +39,9 @@ public class ShareManager {
 	public Share get(String id) {
 		return shareRepository.get(id);
 	}
+	
+	public void update(Share share){
+		shareRepository.update(share);
+	}
 
 }

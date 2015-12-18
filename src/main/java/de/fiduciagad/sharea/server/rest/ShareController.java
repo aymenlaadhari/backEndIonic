@@ -46,5 +46,15 @@ public class ShareController {
 	public Share getShare(@PathVariable String id) {
 		return shareManager.get(id);
 	}
+	
+	@CrossOrigin
+	@RequestMapping(value = "/api/v1/share", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public Map<String, Object> updateShare(@RequestBody(required = true) Share share) {
+
+		shareManager.update(share);
+
+		return Collections.singletonMap("id", share.getId());
+	}
 
 }
