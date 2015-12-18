@@ -45,10 +45,9 @@ public class TokenController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/token", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> login(@RequestParam(value = "email", required = true) String email,
-			@RequestParam(value = "password", required = true) String password,
-			@RequestParam(value = "deviceName", required = true) String deviceName,
-			@RequestParam(value = "deviceIdentifier", required = true) String deviceIdentifier) {
+	public Map<String, Object> login(@RequestParam(required = true) String email,
+			@RequestParam(required = true) String password, @RequestParam(required = true) String deviceName,
+			@RequestParam(required = true) String deviceIdentifier) {
 
 		Account account = accountRepository.findByEmail(email);
 		if (account != null && passwordEncoder.matches(password, account.getPassword())) {

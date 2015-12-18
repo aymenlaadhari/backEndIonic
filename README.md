@@ -2,3 +2,14 @@
 
 # Share.A-java
 Share.A-java
+
+## API Endpoints
+
+### Account
+
+| Function                    | Endpoint                | HTTP Method     |
+| --------------------------- | ----------------------- | --------------- |
+| Add account                 | /api/v1/account         | POST            |
+| Add Access Token to Account | /api/v1/account?id=<id> | POST            |
+
+### 

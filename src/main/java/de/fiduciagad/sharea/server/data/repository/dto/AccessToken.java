@@ -43,9 +43,9 @@ public class AccessToken extends CouchDbDocument {
 		}
 	}
 
-	@JsonProperty("type")
-	@TypeDiscriminator(value = "doc.type === 'AccessToken'")
-	private final String type = "AccessToken";
+	@JsonProperty("docType")
+	@TypeDiscriminator(value = "doc.docType === 'AccessToken'")
+	private final String docType = "AccessToken";
 
 	private Date created;
 

@@ -17,9 +17,11 @@ import com.ibm.watson.developer_cloud.service.InternalServerErrorException;
 
 import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
+import de.fiduciagad.sharea.server.data.repository.CategoryConfigRepository;
+import de.fiduciagad.sharea.server.data.repository.CategoryRepository;
 import de.fiduciagad.sharea.server.data.repository.EventRepository;
-import de.fiduciagad.sharea.server.data.repository.LocationRepository;
 import de.fiduciagad.sharea.server.data.repository.PersonRepository;
+import de.fiduciagad.sharea.server.data.repository.ShareRepository;
 
 /**
  * REST API which should enable developers to perform some basic database
@@ -41,16 +43,22 @@ public class DatabaseController {
 	private AccessTokenRepository accessTokenRepository;
 
 	@Autowired
-	AccountRepository accountRepository;
+	private AccountRepository accountRepository;
 
 	@Autowired
-	EventRepository eventRepository;
+	private PersonRepository personRepository;
 
 	@Autowired
-	LocationRepository locationRepository;
+	private CategoryConfigRepository categoryConfigRepository;
 
 	@Autowired
-	PersonRepository personRepository;
+	private CategoryRepository categoryRepository;
+
+	@Autowired
+	private EventRepository eventRepository;
+
+	@Autowired
+	private ShareRepository shareRepository;
 
 	@Value("${CLOUDANT_DB_NAME}")
 	private String dbName;;
@@ -72,9 +80,11 @@ public class DatabaseController {
 
 			accessTokenRepository.initStandardDesignDocument();
 			accountRepository.initStandardDesignDocument();
+			categoryConfigRepository.initStandardDesignDocument();
+			categoryRepository.initStandardDesignDocument();
 			eventRepository.initStandardDesignDocument();
-			locationRepository.initStandardDesignDocument();
 			personRepository.initStandardDesignDocument();
+			shareRepository.initStandardDesignDocument();
 		} catch (Exception e) {
 			throw new InternalServerErrorException("Could not clean database.", e);
 		}

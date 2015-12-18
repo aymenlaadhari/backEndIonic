@@ -27,9 +27,9 @@ public class Account extends CouchDbDocument {
 
 	private EnumSet<Role> roles;
 
-	@JsonProperty("type")
-	@TypeDiscriminator(value = "doc.type === 'Account'")
-	private final String type = "Account";
+	@JsonProperty("docType")
+	@TypeDiscriminator(value = "doc.docType === 'Account'")
+	private final String docType = "Account";
 
 	// Used for deserialization of the CouchDBDocument
 	@SuppressWarnings("unused")

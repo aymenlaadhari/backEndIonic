@@ -9,25 +9,30 @@ import com.cloudant.client.org.lightcouch.NoDocumentException;
 
 import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
+import de.fiduciagad.sharea.server.data.repository.PersonRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
+import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.dto.exceptions.ModificationException;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 import de.fiduciagad.sharea.server.security.User;
 
 @Component
-public class AccountHandler {
-
-	@Autowired
-	private AccessTokenRepository accessTokenRepository;
+public class AccountManager {
 
 	@Autowired
 	private AccountRepository accountRepository;
 
 	@Autowired
+	private AccessTokenRepository accessTokenRepository;
+
+	@Autowired
+	private PersonRepository personRepository;
+
+	@Autowired
 	private TokenEnabledUserDetailsService userDetailsService;
 
-	public AccountHandler() {
+	public AccountManager() {
 	}
 
 	public void addToken(Account account, String deviceName, String deviceIdentifier) throws ModificationException {
@@ -43,6 +48,18 @@ public class AccountHandler {
 
 	public void addToken(User user, String deviceName, String deviceIdentifier) throws ModificationException {
 		addToken(user.getAccount(), deviceName, deviceIdentifier);
+	}
+
+	public void create(Account account) {
+		accountRepository.add(account);
+		for (Person person : account.getPersons()) {
+			person.setOwningAccountId(account.getId());
+			personRepository.add(person);
+		}
+		for (AccessToken accessToken : account.getAccessTokens()) {
+			accessToken.setOwningAccountId(account.getId());
+			accessTokenRepository.add(accessToken);
+		}
 	}
 
 	public Account getAccountByEmail(String email) {
