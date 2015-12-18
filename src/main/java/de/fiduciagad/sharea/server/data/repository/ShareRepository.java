@@ -35,6 +35,10 @@ public class ShareRepository extends CouchDbRepositorySupport<Share> {
 	public List<Share> findByStartLocation(String startLocation, int limit) {
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(startLocation), "Location cannot be empty.");
 
+		if (limit == 0) {
+			limit = 10;
+		}
+
 		// From now till the future!
 		Calendar nextYear = Calendar.getInstance();
 		nextYear.add(Calendar.YEAR, 1);
