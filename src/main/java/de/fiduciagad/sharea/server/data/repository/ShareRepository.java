@@ -30,14 +30,14 @@ public class ShareRepository extends CouchDbRepositorySupport<Share> {
 		this(Share.class, db);
 	}
 
-	@View(name = "by_startLocation_by_date", map = "function(doc) { if (doc.docType === 'Share') emit( [startLocation, Date.parse(startDate), Date.parse(endDate)], doc )}")
+	@View(name = "by_startLocation_by_date", map = "classpath:/de/fiduciagad/sharea/server/data/repository/functions/by_location_by_date.js")
 	public List<Share> findByStartLocation(String startLocation, int limit) {
 		// From now till the future!
 		Calendar nextYear = Calendar.getInstance();
 		nextYear.add(Calendar.YEAR, 1);
 		Date now = new Date();
-		ComplexKey startKey = ComplexKey.of(startLocation, now, ComplexKey.emptyObject());
-		ComplexKey endKey = ComplexKey.of(startLocation, now, nextYear);
+		ComplexKey startKey = ComplexKey.of(startLocation, now);
+		ComplexKey endKey = ComplexKey.of(startLocation, nextYear);
 
 		PageRequest pageRequest = PageRequest.firstPage(limit);
 		ViewQuery query = new ViewQuery().designDocId(stdDesignDocumentId).viewName("by_startLocation_by_date")
