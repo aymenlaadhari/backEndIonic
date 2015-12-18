@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
-import com.ibm.watson.developer_cloud.service.InternalServerErrorException;
 
 import de.fiduciagad.sharea.server.data.access.AccountManager;
 import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
@@ -75,7 +74,7 @@ public class AccountController {
 			response.put("auth-token", currentToken.getTokenText());
 			return response;
 		} catch (GeneralSecurityException e) {
-			throw new InternalServerErrorException("Cannot create token for user. ", e);
+			throw new IllegalStateException("Cannot create token for user. ", e);
 		}
 	}
 
