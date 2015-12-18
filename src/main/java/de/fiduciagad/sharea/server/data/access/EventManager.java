@@ -1,4 +1,4 @@
-package de.fiduciagad.sharea.server.data.dao;
+package de.fiduciagad.sharea.server.data.access;
 
 import java.util.Date;
 import java.util.List;

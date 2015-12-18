@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.google.common.collect.Maps;
 import com.ibm.watson.developer_cloud.service.InternalServerErrorException;
 
-import de.fiduciagad.sharea.server.data.dao.AccountManager;
+import de.fiduciagad.sharea.server.data.access.AccountManager;
 import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
 import de.fiduciagad.sharea.server.data.repository.dto.Person;

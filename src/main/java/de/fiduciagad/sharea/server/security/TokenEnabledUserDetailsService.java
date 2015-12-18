@@ -15,7 +15,7 @@ import com.google.common.base.Function;
 import com.google.common.collect.Collections2;
 import com.google.common.collect.Lists;
 
-import de.fiduciagad.sharea.server.data.dao.AccountManager;
+import de.fiduciagad.sharea.server.data.access.AccountManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
 import de.fiduciagad.sharea.server.data.repository.dto.Account.Role;
 

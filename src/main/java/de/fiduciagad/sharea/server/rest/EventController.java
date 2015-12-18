@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.fiduciagad.sharea.server.data.dao.EventManager;
+import de.fiduciagad.sharea.server.data.access.EventManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Event;
 
 @RestController
