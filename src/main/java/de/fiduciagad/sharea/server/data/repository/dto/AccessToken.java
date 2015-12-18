@@ -25,7 +25,7 @@ public class AccessToken extends CouchDbDocument {
 
 		AccessToken token = new AccessToken(generate());
 		token.deviceName = deviceName;
-		token.devideIdentifier = deviceIdentifier;
+		token.deviceIdentifier = deviceIdentifier;
 		token.created = new Date();
 		token.lastUsed = new Date();
 		return token;
@@ -51,7 +51,7 @@ public class AccessToken extends CouchDbDocument {
 
 	private String deviceName;
 
-	private String devideIdentifier;
+	private String deviceIdentifier;
 
 	private Date lastUsed;
 
@@ -74,8 +74,8 @@ public class AccessToken extends CouchDbDocument {
 		return deviceName;
 	}
 
-	public String getDevideIdentifier() {
-		return devideIdentifier;
+	public String getDeviceIdentifier() {
+		return deviceIdentifier;
 	}
 
 	public Date getLastUsed() {
@@ -98,8 +98,8 @@ public class AccessToken extends CouchDbDocument {
 		this.deviceName = deviceName;
 	}
 
-	public void setDevideIdentifier(String devideIdentifier) {
-		this.devideIdentifier = devideIdentifier;
+	public void setDeviceIdentifier(String deviceIdentifier) {
+		this.deviceIdentifier = deviceIdentifier;
 	}
 
 	public void setLastUsed(Date lastUsed) {
