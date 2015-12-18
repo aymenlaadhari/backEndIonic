@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.google.common.collect.Maps;
-import com.ibm.watson.developer_cloud.service.InternalServerErrorException;
 
 import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
@@ -62,7 +61,7 @@ public class TokenController {
 				httpResponse.put("auth-token", currentToken.getTokenText());
 				return httpResponse;
 			} catch (GeneralSecurityException e) {
-				throw new InternalServerErrorException("Cannot create token for user. ", e);
+				throw new IllegalStateException("Cannot create token for user. ", e);
 			}
 		}
 		throw new BadCredentialsException("Could not authenticate user.");
