@@ -1,7 +1,7 @@
 package de.fiduciagad.sharea.server.rest;
 
 import java.security.GeneralSecurityException;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 import org.apache.commons.validator.routines.EmailValidator;
@@ -14,8 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.google.common.collect.Maps;
 
 import de.fiduciagad.sharea.server.data.access.AccountManager;
 import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
@@ -46,7 +44,7 @@ public class AccountController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/account", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> createAccout(@RequestBody(required = true) NewAccount newAccount) {
+	public Map<String, String> createAccount(@RequestBody(required = true) NewAccount newAccount) {
 
 		// TODO Beautify email vaidation
 		if (!EmailValidator.getInstance().isValid(newAccount.getEmail())) {
@@ -69,10 +67,7 @@ public class AccountController {
 			accountManager.create(account);
 
 			// TODO send mail
-			HashMap<String, Object> response = Maps.newHashMap();
-			response.put("success", true);
-			response.put("auth-token", currentToken.getTokenText());
-			return response;
+			return Collections.singletonMap("auth-token", currentToken.getTokenText());
 		} catch (GeneralSecurityException e) {
 			throw new IllegalStateException("Cannot create token for user. ", e);
 		}

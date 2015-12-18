@@ -1,7 +1,7 @@
 package de.fiduciagad.sharea.server.rest;
 
 import java.security.GeneralSecurityException;
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,8 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.google.common.collect.Maps;
 
 import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
@@ -45,7 +43,7 @@ public class TokenController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/token", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> login(@RequestBody NewToken newToken) {
+	public Map<String, String> createToken(@RequestBody NewToken newToken) {
 
 		Account account = accountRepository.findByEmail(newToken.getEmail());
 		if (account != null && passwordEncoder.matches(newToken.getPassword(), account.getPassword())) {
@@ -55,10 +53,7 @@ public class TokenController {
 				currentToken.setOwningAccountId(account.getId());
 				accessTokenRepository.add(currentToken);
 
-				HashMap<String, Object> httpResponse = Maps.newHashMap();
-				httpResponse.put("success", Boolean.TRUE);
-				httpResponse.put("auth-token", currentToken.getTokenText());
-				return httpResponse;
+				return Collections.singletonMap("auth-token", currentToken.getTokenText());
 			} catch (GeneralSecurityException e) {
 				throw new IllegalStateException("Cannot create token for user. ", e);
 			}
