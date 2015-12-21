@@ -41,7 +41,7 @@ public class ShareController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "/api/v1/share/{id}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/share/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Share getShare(@PathVariable String id) {
 		return shareManager.get(id);
