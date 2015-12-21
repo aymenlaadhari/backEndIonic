@@ -41,7 +41,7 @@ public class CommentController {
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "/api/v1/comment/{id}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/comment/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Comment getShare(@PathVariable String id) {
 		return commentManager.get(id);
