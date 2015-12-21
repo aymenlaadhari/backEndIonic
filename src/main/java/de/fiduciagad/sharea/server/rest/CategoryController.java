@@ -21,14 +21,14 @@ public class CategoryController {
 	private CategoryRepository categoryRepository;
 
 	@CrossOrigin
-	@RequestMapping(value = "/api/v1/category", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/category", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Category> getCategories() {
 		return categoryRepository.getAll();
 	}
 
 	@CrossOrigin
-	@RequestMapping(value = "/api/v1/category/{id}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/category/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Category getCategory(@PathVariable String id) {
 		return categoryRepository.get(id);
