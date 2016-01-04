@@ -1,6 +1,5 @@
 package de.fiduciagad.sharea.server.rest;
 
-import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.Map;
 
@@ -14,20 +13,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
-import de.fiduciagad.sharea.server.data.repository.AccountRepository;
-import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
+import de.fiduciagad.sharea.server.data.access.AccountManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
+import de.fiduciagad.sharea.server.dto.exceptions.ModificationException;
 import de.fiduciagad.sharea.server.rest.dto.NewToken;
 
 @RestController
 public class TokenController {
 
 	@Autowired
-	private AccountRepository accountRepository;
-
-	@Autowired
-	private AccessTokenRepository accessTokenRepository;
+	private AccountManager accountManager;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -39,24 +34,18 @@ public class TokenController {
 	 * @param password
 	 * @param deviceName
 	 * @return
+	 * @throws ModificationException
 	 */
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/token", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> createToken(@RequestBody NewToken newToken) {
+	public Map<String, String> createToken(@RequestBody NewToken newToken) throws ModificationException {
 
-		Account account = accountRepository.findByEmail(newToken.getEmail());
+		Account account = accountManager.getAccountByEmail(newToken.getEmail(), true);
 		if (account != null && passwordEncoder.matches(newToken.getPassword(), account.getPassword())) {
-			AccessToken currentToken;
-			try {
-				currentToken = AccessToken.createRandom(newToken.getDeviceName(), newToken.getDeviceIdentifier());
-				currentToken.setOwningAccountId(account.getId());
-				accessTokenRepository.add(currentToken);
-
-				return Collections.singletonMap("auth-token", currentToken.getTokenText());
-			} catch (GeneralSecurityException e) {
-				throw new IllegalStateException("Cannot create token for user. ", e);
-			}
+			String tokenText = accountManager.addToken(account, newToken.getDeviceName(),
+					newToken.getDeviceIdentifier());
+			return Collections.singletonMap("auth-token", tokenText);
 		}
 		throw new BadCredentialsException("Could not authenticate user.");
 	}

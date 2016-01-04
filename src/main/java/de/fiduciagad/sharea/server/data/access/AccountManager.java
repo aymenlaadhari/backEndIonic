@@ -37,19 +37,25 @@ public class AccountManager {
 	public AccountManager() {
 	}
 
-	public void addToken(Account account, String deviceName, String deviceIdentifier) throws ModificationException {
+	/**
+	 * Adds a token to a user and returns the token value as String.
+	 *
+	 * @param account
+	 * @param deviceName
+	 * @param deviceIdentifier
+	 * @return
+	 * @throws ModificationException
+	 */
+	public String addToken(Account account, String deviceName, String deviceIdentifier) throws ModificationException {
 		try {
-			AccessToken token = getNewToken(deviceName, deviceIdentifier);
+			AccessToken token = AccessToken.createRandom(deviceName, deviceIdentifier);
 			token.setOwningAccountId(account.getId());
 			accessTokenRepository.add(token);
+			return token.getTokenText();
 		} catch (GeneralSecurityException e) {
 			throw new ModificationException("Could not add token to user.", e);
 		}
 
-	}
-
-	public void addToken(User user, String deviceName, String deviceIdentifier) throws ModificationException {
-		addToken(user.getAccount(), deviceName, deviceIdentifier);
 	}
 
 	public void create(Account account) {
@@ -110,10 +116,6 @@ public class AccountManager {
 			}
 		}
 		return null;
-	}
-
-	private AccessToken getNewToken(String deviceName, String deviceIdentifier) throws GeneralSecurityException {
-		return AccessToken.createRandom(deviceName, deviceIdentifier);
 	}
 
 	public User getUserByToken(String tokenText) {
