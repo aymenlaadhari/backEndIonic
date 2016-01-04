@@ -25,7 +25,7 @@ public class CommentManager {
 		return commentRepository.get(id);
 	}
 	
-	public List<Comment> findByShares(String shareId) {
+	public List<Comment> findByShareId(String shareId) {
 		return commentRepository.findByShares(shareId);
 	}
 

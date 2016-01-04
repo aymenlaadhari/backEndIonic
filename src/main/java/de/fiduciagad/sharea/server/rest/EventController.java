@@ -28,14 +28,14 @@ public class EventController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/event", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> createEvent(@RequestParam(required = true) String name,
+	public Map<String, String> createEvent(@RequestParam(required = true) String name,
 			@RequestParam(required = true) String location, @RequestParam(required = true) Set<String> participantIds,
 			@RequestParam(required = true) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) Date startTime) {
 
 		eventManager.create(name, location, participantIds, startTime);
 		// TODO ehm... if it doesn't throw an exception everything is cool?
 		// Hmm... maybe better error handling.
-		return Collections.singletonMap("success", true);
+		return Collections.singletonMap("success", Boolean.TRUE.toString());
 	}
 
 	@CrossOrigin

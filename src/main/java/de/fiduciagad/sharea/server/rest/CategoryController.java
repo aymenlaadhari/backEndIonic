@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import de.fiduciagad.sharea.server.data.repository.CategoryRepository;
+import de.fiduciagad.sharea.server.data.access.CategoryManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Category;
 
 @RestController
@@ -18,20 +18,20 @@ public class CategoryController {
 
 	// TODO introduce handler
 	@Autowired
-	private CategoryRepository categoryRepository;
+	private CategoryManager categoryManager;
 
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/category", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public List<Category> getCategories() {
-		return categoryRepository.getAll();
+		return categoryManager.getAll();
 	}
 
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/category/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Category getCategory(@PathVariable String id) {
-		return categoryRepository.get(id);
+		return categoryManager.get(id);
 	}
 
 }

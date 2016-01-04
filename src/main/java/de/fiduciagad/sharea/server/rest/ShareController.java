@@ -26,7 +26,7 @@ public class ShareController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> createShare(@RequestBody(required = true) Share share) {
+	public Map<String, String> createShare(@RequestBody(required = true) Share share) {
 
 		shareManager.create(share);
 
@@ -46,11 +46,11 @@ public class ShareController {
 	public Share getShare(@PathVariable String id) {
 		return shareManager.get(id);
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> updateShare(@RequestBody(required = true) Share share) {
+	public Map<String, String> updateShare(@RequestBody(required = true) Share share) {
 
 		shareManager.update(share);
 

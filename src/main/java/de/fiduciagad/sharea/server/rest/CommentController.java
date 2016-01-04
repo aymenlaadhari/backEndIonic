@@ -26,18 +26,16 @@ public class CommentController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/comment", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, Object> createShare(@RequestBody(required = true) Comment comment) {
-
+	public Map<String, String> createShare(@RequestBody(required = true) Comment comment) {
 		commentManager.create(comment);
-
 		return Collections.singletonMap("id", comment.getId());
 	}
-	
+
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/findComments", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public List<Comment> findComments(@RequestBody(required = true) FindComments findComments) {
-		return commentManager.findByShares(findComments.getShareId());
+		return commentManager.findByShareId(findComments.getShareId());
 	}
 
 	@CrossOrigin
