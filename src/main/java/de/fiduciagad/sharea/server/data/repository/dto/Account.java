@@ -3,6 +3,7 @@ package de.fiduciagad.sharea.server.data.repository.dto;
 import java.util.EnumSet;
 import java.util.Set;
 
+import org.codehaus.jackson.annotate.JsonIgnore;
 import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.CouchDbDocument;
 import org.ektorp.support.TypeDiscriminator;
@@ -17,10 +18,12 @@ public class Account extends CouchDbDocument {
 
 	private static final long serialVersionUID = 1L;
 
+	@JsonIgnore
 	private Set<AccessToken> accessTokens;
 
 	private String email;
 
+	@JsonIgnore
 	private Set<Person> persons;
 
 	private String password;

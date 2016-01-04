@@ -55,7 +55,6 @@ public final class TokenEnabledUserDetailsService implements UserDetailsService 
 
 	@Override
 	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		// Account account = db.findAccountByEmail(username);
 		Account account = accountHandler.getAccountByEmail(email);
 		if (account != null) {
 			List<GrantedAuthority> grantedAuthorities = getAuthorities(account);

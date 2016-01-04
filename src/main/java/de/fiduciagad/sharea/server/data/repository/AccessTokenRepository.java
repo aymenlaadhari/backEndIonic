@@ -21,7 +21,7 @@ public class AccessTokenRepository extends AbstractRepository<AccessToken> {
 	}
 
 	@View(name = "by_owningAccountId", map = "function(doc) { if(doc.docType === 'AccessToken' && doc.owningAccountId) {emit(doc.owningAccountId, doc._id)} }")
-	public List<AccessToken> findByOwningAccountId(Account account) {
+	public List<AccessToken> findByOwningAccount(Account account) {
 		return queryView("by_owningAccountId", account.getId());
 	}
 

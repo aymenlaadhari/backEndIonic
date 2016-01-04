@@ -1,11 +1,13 @@
 package de.fiduciagad.sharea.server.data.access;
 
 import java.security.GeneralSecurityException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.cloudant.client.org.lightcouch.NoDocumentException;
+import com.google.common.collect.Sets;
 
 import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
@@ -62,8 +64,40 @@ public class AccountManager {
 		}
 	}
 
+	public boolean exists(String email) {
+		return accountRepository.findByEmail(email) != null;
+	}
+
+	/**
+	 * Return the account without person or access token information. If you
+	 * want to get associated persons and tokens use
+	 * {@link #getAccountByEmail(String, boolean)}.
+	 *
+	 * @param email
+	 * @return
+	 */
 	public Account getAccountByEmail(String email) {
-		return accountRepository.findByEmail(email);
+		return getAccountByEmail(email, false);
+	}
+
+	/**
+	 * Return the account.
+	 *
+	 * @param email
+	 * @param eagerFetch
+	 *            If set to <code>true</code> also return associated tokens an
+	 *            persons, else these are omitted.
+	 * @return
+	 */
+	public Account getAccountByEmail(String email, boolean eagerFetch) {
+		Account account = accountRepository.findByEmail(email);
+		if (eagerFetch && account != null) {
+			List<AccessToken> tokens = accessTokenRepository.findByOwningAccount(account);
+			account.setAccessTokens(Sets.newHashSet(tokens));
+			Person persons = personRepository.findByOwningAccountId(account.getId());
+			account.setPersons(Sets.newHashSet(persons));
+		}
+		return account;
 	}
 
 	public Account getAccountByToken(String tokenText) {

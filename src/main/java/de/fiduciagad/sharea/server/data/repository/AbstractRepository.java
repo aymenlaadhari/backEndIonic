@@ -47,7 +47,7 @@ abstract public class AbstractRepository<T extends CouchDbDocument> extends Couc
 			designDoc.setId(stdDesignDocumentId);
 		}
 		DesignDocument.View allView = new DesignDocument.View();
-		allView.setMap("function(doc) { if (doc.docType === '" + type.getSimpleName() + "' ) emit( null, doc._id )}");
+		allView.setMap("function(doc) { if ( doc.docType === '" + type.getSimpleName() + "' ) emit( null, doc._id ) }");
 		designDoc.addView("all", allView);
 		db.update(designDoc);
 	}
