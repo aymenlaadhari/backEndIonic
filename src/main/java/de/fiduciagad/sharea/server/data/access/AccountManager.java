@@ -20,10 +20,7 @@ import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 import de.fiduciagad.sharea.server.security.User;
 
 @Component
-public class AccountManager {
-
-	@Autowired
-	private AccountRepository accountRepository;
+public class AccountManager extends AbstractManager<Account, AccountRepository> {
 
 	@Autowired
 	private AccessTokenRepository accessTokenRepository;
@@ -34,7 +31,9 @@ public class AccountManager {
 	@Autowired
 	private TokenEnabledUserDetailsService userDetailsService;
 
-	public AccountManager() {
+	@Autowired
+	public AccountManager(AccountRepository accountRepository) {
+		super(accountRepository);
 	}
 
 	/**
@@ -58,8 +57,9 @@ public class AccountManager {
 
 	}
 
+	@Override
 	public void create(Account account) {
-		accountRepository.add(account);
+		getRepository().add(account);
 		for (Person person : account.getPersons()) {
 			person.setOwningAccountId(account.getId());
 			personRepository.add(person);
@@ -70,8 +70,8 @@ public class AccountManager {
 		}
 	}
 
-	public boolean exists(String email) {
-		return accountRepository.findByEmail(email) != null;
+	public boolean existsByEmail(String email) {
+		return getRepository().findByEmail(email) != null;
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class AccountManager {
 	 * @return
 	 */
 	public Account getAccountByEmail(String email, boolean eagerFetch) {
-		Account account = accountRepository.findByEmail(email);
+		Account account = getRepository().findByEmail(email);
 		if (eagerFetch && account != null) {
 			List<AccessToken> tokens = accessTokenRepository.findByOwningAccount(account);
 			account.setAccessTokens(Sets.newHashSet(tokens));
@@ -110,7 +110,7 @@ public class AccountManager {
 		AccessToken accessToken = accessTokenRepository.findByTokenText(tokenText);
 		if (accessToken != null) {
 			try {
-				return accountRepository.get(accessToken.getOwningAccountId());
+				return getRepository().get(accessToken.getOwningAccountId());
 			} catch (NoDocumentException e) {
 				return null;
 			}

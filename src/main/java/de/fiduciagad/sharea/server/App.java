@@ -39,9 +39,6 @@ public class App {
 @Configuration
 class CloudConfiguration extends AbstractCloudConfig {
 
-	@Value("${CLOUDANT_CONFIG_KEY}")
-	private String dbServiceName;
-
 	@Value("${CLOUDANT_DB_NAME}")
 	private String dbName;;
 
@@ -59,8 +56,10 @@ class CloudConfiguration extends AbstractCloudConfig {
 
 	@Bean
 	public CouchDbInstance couchDbInstance() {
-		return cloud.getServiceConnector(dbServiceName, CouchDbInstance.class,
-				null /* default config */);
+		// If more than one Cloudant DB is bound to the app this will throw an
+		// error. This is intentional to prevent more than one Cloudant
+		// database.
+		return cloud.getSingletonServiceConnector(CouchDbInstance.class, null);
 	}
 
 }

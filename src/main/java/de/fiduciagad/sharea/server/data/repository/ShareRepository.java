@@ -14,6 +14,7 @@ import org.springframework.stereotype.Component;
 import com.google.common.base.Preconditions;
 import com.google.common.base.Strings;
 
+import de.fiduciagad.sharea.server.data.repository.dto.Category;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
 
 @Component
@@ -22,6 +23,11 @@ public class ShareRepository extends AbstractRepository<Share> {
 	@Autowired
 	public ShareRepository(CouchDbConnector db) {
 		super(Share.class, db);
+	}
+
+	@View(name = "by_categoryId", map = "function(doc) { if(doc.docType === 'Share' && doc.categoryIds) {doc.categoryIds.forEach(function(categoryId) {emit(categoryId, doc._id)}}) }")
+	public List<Share> findByCategory(Category category) {
+		return queryView("by_categoryId", category.getId());
 	}
 
 	@View(name = "by_startLocation_by_date", map = "classpath:/de/fiduciagad/sharea/server/data/repository/functions/by_location_by_date.js")

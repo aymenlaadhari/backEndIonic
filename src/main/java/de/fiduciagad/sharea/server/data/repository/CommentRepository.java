@@ -20,7 +20,7 @@ public class CommentRepository extends AbstractRepository<Comment> {
 		super(Comment.class, db);
 	}
 
-	@View(name = "findComments", map = "function(doc) { if (doc.docType === 'Comment' ) emit( doc.shareId, doc )}")
+	@View(name = "findComments", map = "function(doc) { if (doc.docType === 'Comment' ) emit( doc.shareId, doc._id )}")
 	public List<Comment> findByShares(String shareId) {
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(shareId), "ShareId cannot be empty.");
 		return queryView("findComments", shareId);

@@ -53,7 +53,7 @@ public class AccountController {
 		if (!newAccount.getEmail().endsWith("@fiduciagad.de")) {
 			throw new IllegalArgumentException("You have to use an @fiduciagad.de e-mail address.");
 		}
-		if (accountManager.exists(newAccount.getEmail())) {
+		if (accountManager.existsByEmail(newAccount.getEmail())) {
 			throw new DuplicateKeyException("User already exists.");
 		}
 

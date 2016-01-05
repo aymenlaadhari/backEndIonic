@@ -7,20 +7,11 @@ import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
 
 @Component
-public class AccessTokenManager {
+public class AccessTokenManager extends AbstractManager<AccessToken, AccessTokenRepository> {
 
 	@Autowired
-	private AccessTokenRepository accessTokenRepository;
-
-	public AccessTokenManager() {
-	}
-
-	public void create(AccessToken comment) {
-		accessTokenRepository.add(comment);
-	}
-
-	public AccessToken get(String id) {
-		return accessTokenRepository.get(id);
+	public AccessTokenManager(AccessTokenRepository repository) {
+		super(repository);
 	}
 
 }

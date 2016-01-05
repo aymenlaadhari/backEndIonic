@@ -9,24 +9,15 @@ import de.fiduciagad.sharea.server.data.repository.CommentRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.Comment;
 
 @Component
-public class CommentManager {
+public class CommentManager extends AbstractManager<Comment, CommentRepository> {
 
 	@Autowired
-	private CommentRepository commentRepository;
-
-	public CommentManager() {
+	public CommentManager(CommentRepository commentRepository) {
+		super(commentRepository);
 	}
 
-	public void create(Comment comment) {
-		commentRepository.add(comment);
-	}
-
-	public Comment get(String id) {
-		return commentRepository.get(id);
-	}
-	
 	public List<Comment> findByShareId(String shareId) {
-		return commentRepository.findByShares(shareId);
+		return getRepository().findByShares(shareId);
 	}
 
 }

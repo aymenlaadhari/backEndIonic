@@ -11,29 +11,20 @@ import de.fiduciagad.sharea.server.data.repository.EventRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.Event;
 
 @Component
-public class EventManager {
+public class EventManager extends AbstractManager<Event, EventRepository> {
 
 	@Autowired
-	private EventRepository eventRepository;
-
-	public EventManager() {
-	}
-
-	public void create(Event event) {
-		eventRepository.add(event);
+	public EventManager(EventRepository eventRepository) {
+		super(eventRepository);
 	}
 
 	public void create(String name, String location, Set<String> participantIds, Date dateTime) {
 		Event event = new Event(name, location, participantIds, dateTime);
-		eventRepository.add(event);
+		create(event);
 	}
 
 	public List<Event> findByStartLocation(String location, int limit) {
-		return eventRepository.findByLocation(location);
-	}
-
-	public Event get(String id) {
-		return eventRepository.get(id);
+		return getRepository().findByLocation(location);
 	}
 
 }

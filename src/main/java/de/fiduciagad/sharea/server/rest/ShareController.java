@@ -27,9 +27,7 @@ public class ShareController {
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, String> createShare(@RequestBody(required = true) Share share) {
-
 		shareManager.create(share);
-
 		return Collections.singletonMap("id", share.getId());
 	}
 
@@ -51,9 +49,7 @@ public class ShareController {
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, String> updateShare(@RequestBody(required = true) Share share) {
-
 		shareManager.update(share);
-
 		return Collections.singletonMap("id", share.getId());
 	}
 

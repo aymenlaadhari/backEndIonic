@@ -11,16 +11,11 @@ import de.fiduciagad.sharea.server.data.repository.ShareRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
 
 @Component
-public class ShareManager {
+public class ShareManager extends AbstractManager<Share, ShareRepository> {
 
 	@Autowired
-	private ShareRepository shareRepository;
-
-	public ShareManager() {
-	}
-
-	public void create(Share share) {
-		shareRepository.add(share);
+	public ShareManager(ShareRepository shareRepository) {
+		super(shareRepository);
 	}
 
 	public Share create(String title, String description, Set<String> categoryIds, String startLocation,
@@ -28,20 +23,14 @@ public class ShareManager {
 			Set<String> participantIds, int participantLimit) {
 		Share share = new Share(title, description, categoryIds, icon, startLocation, endLocation, startDate, endDate,
 				owningPersonId, participantIds, participantLimit);
-		shareRepository.add(share);
+		// TODO Add some validations: startDate in future, endDate > startDate,
+		// things not empty...
+		create(share);
 		return share;
 	}
 
 	public List<Share> findByStartLocation(String startLocation, int limit) {
-		return shareRepository.findByStartLocation(startLocation, limit);
-	}
-
-	public Share get(String id) {
-		return shareRepository.get(id);
-	}
-	
-	public void update(Share share){
-		shareRepository.update(share);
+		return getRepository().findByStartLocation(startLocation, limit);
 	}
 
 }

@@ -12,7 +12,7 @@ public class Category extends CouchDbDocument {
 	private String title;
 	private String imgSrc;
 	private Set<String> icons;
-	private String categoryConfigId;
+	private CategoryConfig categoryConfig;
 
 	@JsonProperty("docType")
 	@TypeDiscriminator(value = "doc.docType === 'Category'")
@@ -23,16 +23,16 @@ public class Category extends CouchDbDocument {
 	private Category() {
 	}
 
-	public Category(String title, String imgSrc, Set<String> icons, String categoryConfigId) {
+	public Category(String title, String imgSrc, Set<String> icons, CategoryConfig categoryConfig) {
 		super();
 		this.title = title;
 		this.imgSrc = imgSrc;
 		this.icons = icons;
-		this.categoryConfigId = categoryConfigId;
+		this.categoryConfig = categoryConfig;
 	}
 
-	public String getCategoryConfigId() {
-		return categoryConfigId;
+	public CategoryConfig getCategoryConfig() {
+		return categoryConfig;
 	}
 
 	public Set<String> getIcons() {
@@ -47,8 +47,8 @@ public class Category extends CouchDbDocument {
 		return title;
 	}
 
-	public void setCategoryConfigId(String categoryConfigId) {
-		this.categoryConfigId = categoryConfigId;
+	public void setCategoryConfig(CategoryConfig categoryConfig) {
+		this.categoryConfig = categoryConfig;
 	}
 
 	public void setIcons(Set<String> icons) {
