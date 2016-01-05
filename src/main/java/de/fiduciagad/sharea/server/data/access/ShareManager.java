@@ -18,10 +18,10 @@ public class ShareManager extends AbstractManager<Share, ShareRepository> {
 		super(shareRepository);
 	}
 
-	public Share create(String title, String description, Set<String> categoryIds, String startLocation,
-			String endLocation, Date startDate, Date endDate, String icon, String owningPersonId,
-			Set<String> participantIds, int participantLimit) {
-		Share share = new Share(title, description, categoryIds, icon, startLocation, endLocation, startDate, endDate,
+	public Share create(String title, String description, String categoryId, String startLocation, String endLocation,
+			Date startDate, Date endDate, String icon, String owningPersonId, Set<String> participantIds,
+			int participantLimit) {
+		Share share = new Share(title, description, categoryId, icon, startLocation, endLocation, startDate, endDate,
 				owningPersonId, participantIds, participantLimit);
 		// TODO Add some validations: startDate in future, endDate > startDate,
 		// things not empty...

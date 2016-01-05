@@ -26,7 +26,7 @@ public class Share extends CouchDbDocument {
 	private Set<String> participantIds;
 	private int participantLimit;
 
-	private Set<String> categoryIds;
+	private String categoryId;
 
 	@JsonProperty("docType")
 	@TypeDiscriminator(value = "doc.docType === 'Share'")
@@ -37,13 +37,13 @@ public class Share extends CouchDbDocument {
 	private Share() {
 	}
 
-	public Share(String title, String description, Set<String> categoryIds, String icon, String startLocation,
+	public Share(String title, String description, String categoryId, String icon, String startLocation,
 			String endLocation, Date startDate, Date endDate, String owningPersonId, Set<String> participantIds,
 			int participantLimit) {
 		super();
 		this.title = title;
 		this.description = description;
-		this.categoryIds = categoryIds;
+		this.categoryId = categoryId;
 		this.icon = icon;
 		this.startLocation = startLocation;
 		this.endLocation = endLocation;
@@ -54,8 +54,8 @@ public class Share extends CouchDbDocument {
 		this.participantLimit = participantLimit;
 	}
 
-	public Set<String> getCategoryIds() {
-		return categoryIds;
+	public String getCategoryId() {
+		return categoryId;
 	}
 
 	public String getDescription() {
@@ -98,8 +98,8 @@ public class Share extends CouchDbDocument {
 		return title;
 	}
 
-	public void setCategory(Set<String> categoryIds) {
-		this.categoryIds = categoryIds;
+	public void setCategory(String categoryId) {
+		this.categoryId = categoryId;
 	}
 
 	public void setDescription(String description) {
