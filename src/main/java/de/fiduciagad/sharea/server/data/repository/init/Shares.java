@@ -38,26 +38,24 @@ public class Shares {
 		// TODO Auto-generated constructor stub
 	}
 
-	private Share createShare1() {
-		String internalCategoryName = "travel-together";
+	private Share createShare(String internalCategoryName, String title, String description, String icon,
+			String startLocation, String endLocation) {
+
 		String owner = getOwner();
+
+		Date startDate = null;
+		Date endDate = null;
+		if (new Random().nextBoolean()) {
+			startDate = DateUtils.addDays(currentDate, new Random().nextInt(3));
+			endDate = DateUtils.addHours(startDate, new Random().nextInt(5));
+		} else {
+			startDate = DateUtils.addHours(currentDate, new Random().nextInt(5));
+			endDate = DateUtils.addHours(startDate, new Random().nextInt(2));
+		}
+
 		Set<String> participants = getParticipants(owner);
-
-		return new Share("HBF Karlsruhe zu Standort Karlsruhe", "", getIdForCategory(internalCategoryName),
-				"ion-md-car", "HBF Karlsruhe", "Standort Karlsruhe", currentDate, DateUtils.addHours(currentDate, 1),
-				owner, participants, participants.size() + 2);
-
-	}
-
-	private Share createShare2() {
-		String internalCategoryName = "travel-together";
-		String owner = getOwner();
-		Set<String> participants = getParticipants(owner);
-
-		return new Share("HBF Münster zu Standort Münster", "", getIdForCategory(internalCategoryName), "ion-md-car",
-				"HBF Karlsruhe", "Standort Karlsruhe", DateUtils.addHours(currentDate, 4),
-				DateUtils.addHours(currentDate, 5), owner, participants, participants.size() + 2);
-
+		return new Share(title, description, getIdForCategory(internalCategoryName), icon, startLocation, endLocation,
+				startDate, endDate, owner, participants, participants.size() + new Random().nextInt(10));
 	}
 
 	private String getIdForCategory(String internalName) {
@@ -91,7 +89,15 @@ public class Shares {
 		Preconditions.checkArgument(categoryMapping != null && categoryMapping.size() >= 3,
 				"Need at least three categories.");
 
-		List<Share> shares = Lists.newArrayList(createShare1(), createShare2());
+		List<Share> shares = Lists.newArrayList(//
+				createShare("travel-together", "HBF Karlsruhe zu Standort Karlsruhe", "", "ion-md-car", "HBF Karlsruhe",
+						"Standort Karlsruhe"), //
+				createShare("travel-together", "HBF Münster zu Standort Münster", "", "ion-md-car", "HBF Münster",
+						"Standort Münster"), //
+				createShare("eat-together", "Betriebsrestaurant München", "", "ion-md-restaurant", "München", ""), //
+				createShare("eat-together", "Kaffee trinken", "", "ion-md-cafe", "Berlin", ""), //
+				createShare("share-office", "Büro Frankfurt", "", "ion-ios-monitor", "Frankfurt", "") //
+		);
 		for (Share share : shares) {
 			List<Share> dbResult = shareRepository.findByTitle(share.getTitle());
 			if (dbResult.isEmpty()) {

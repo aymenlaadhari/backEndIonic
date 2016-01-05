@@ -1,8 +1,6 @@
 package de.fiduciagad.sharea.server.data.repository.dto;
 
-import org.codehaus.jackson.annotate.JsonProperty;
 import org.ektorp.support.CouchDbDocument;
-import org.ektorp.support.TypeDiscriminator;
 
 public class CategoryConfig extends CouchDbDocument {
 
@@ -17,13 +15,10 @@ public class CategoryConfig extends CouchDbDocument {
 	private boolean showEndtime;
 
 	private boolean showLocation;
+
 	private boolean showEndLocation;
 
 	private boolean ShowParticipants;
-
-	@JsonProperty("docType")
-	@TypeDiscriminator(value = "doc.docType === 'CategoryConfig'")
-	private final String docType = "CategoryConfig";
 
 	// Used for deserialization of the CouchDBDocument
 	@SuppressWarnings("unused")
