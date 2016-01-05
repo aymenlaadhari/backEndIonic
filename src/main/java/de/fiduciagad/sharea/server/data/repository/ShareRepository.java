@@ -25,7 +25,7 @@ public class ShareRepository extends AbstractRepository<Share> {
 		super(Share.class, db);
 	}
 
-	@View(name = "by_categoryId", map = "function(doc) { if(doc.docType === 'Share' && doc.categoryIds) {doc.categoryIds.forEach(function(categoryId) {emit(categoryId, doc._id)}}) }")
+	@View(name = "by_categoryId", map = "function(doc) { if(doc.docType === 'Share' && doc.categoryIds) {doc.categoryIds.forEach(function(categoryId) {emit(categoryId, doc._id)})} }")
 	public List<Share> findByCategory(Category category) {
 		return queryView("by_categoryId", category.getId());
 	}
