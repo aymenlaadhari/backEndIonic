@@ -17,6 +17,11 @@ public class PersonRepository extends AbstractRepository<Person> {
 		super(Person.class, db);
 	}
 
+	@View(name = "by_name", map = "function(doc) { if(doc.docType === 'Person' && doc.name) {emit(doc.name, doc._id)} }")
+	public Person findByName(String name) {
+		return Iterables.getFirst(queryView("by_name", name), null);
+	}
+
 	@View(name = "by_owningAccountId", map = "function(doc) { if(doc.docType === 'Person' && doc.owningAccountId) {emit(doc.owningAccountId, doc._id)} }")
 	public Person findByOwningAccountId(String owningAccountId) {
 		return Iterables.getFirst(queryView("by_owningAccountId", owningAccountId), null);

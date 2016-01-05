@@ -30,7 +30,7 @@ import de.fiduciagad.sharea.server.data.repository.ShareRepository;
  *
  */
 @RestController
-@ConditionalOnProperty(prefix = "spring.profiles", name = "active", havingValue = "local")
+@ConditionalOnProperty(prefix = "spring.profiles", name = "active", havingValue = "dev")
 public class DatabaseController {
 
 	@Autowired

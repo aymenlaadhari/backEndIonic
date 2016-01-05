@@ -7,9 +7,8 @@
 <listEntry value="1"/>
 </listAttribute>
 <mapAttribute key="org.eclipse.debug.core.environmentVariables">
-<mapEntry key="CLOUDANT_CONFIG_KEY" value="cloudantNoSQLDB"/>
 <mapEntry key="CLOUDANT_DB_NAME" value="sharea"/>
-<mapEntry key="SPRING_PROFILES_ACTIVE" value="cloud"/>
+<mapEntry key="SPRING_PROFILES_ACTIVE" value="dev"/>
 <mapEntry key="VCAP_APPLICATION" value="bluemix"/>
 <mapEntry key="VCAP_SERVICES" value="{&quot;cloudantNoSQLDB&quot;: [{&quot;name&quot;: &quot;cloudantNoSQLDB&quot;,&quot;label&quot;: &quot;cloudantNoSQLDB&quot;,&quot;plan&quot;: &quot;Shared&quot;,&quot;credentials&quot;: {&quot;username&quot;: &quot;0c63a633-7702-49d4-a122-c063734cc194-bluemix&quot;,&quot;password&quot;: &quot;326819ff6efadaa99bb0cc4ec1e458a73850decb9e4946c0dfa2eb1ea26b92ba&quot;,&quot;host&quot;: &quot;0c63a633-7702-49d4-a122-c063734cc194-bluemix.cloudant.com&quot;,&quot;port&quot;: 443,&quot;url&quot;: &quot;https://0c63a633-7702-49d4-a122-c063734cc194-bluemix:326819ff6efadaa99bb0cc4ec1e458a73850decb9e4946c0dfa2eb1ea26b92ba@0c63a633-7702-49d4-a122-c063734cc194-bluemix.cloudant.com&quot;}}]}"/>
 </mapAttribute>

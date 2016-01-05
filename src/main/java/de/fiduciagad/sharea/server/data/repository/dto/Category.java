@@ -9,6 +9,7 @@ import org.ektorp.support.TypeDiscriminator;
 public class Category extends CouchDbDocument {
 
 	private static final long serialVersionUID = 1L;
+	private String internalName;
 	private String title;
 	private String imgSrc;
 	private Set<String> icons;
@@ -23,8 +24,10 @@ public class Category extends CouchDbDocument {
 	private Category() {
 	}
 
-	public Category(String title, String imgSrc, Set<String> icons, CategoryConfig categoryConfig) {
+	public Category(String internalName, String title, String imgSrc, Set<String> icons,
+			CategoryConfig categoryConfig) {
 		super();
+		this.internalName = internalName;
 		this.title = title;
 		this.imgSrc = imgSrc;
 		this.icons = icons;
@@ -43,6 +46,10 @@ public class Category extends CouchDbDocument {
 		return imgSrc;
 	}
 
+	public String getInternalName() {
+		return internalName;
+	}
+
 	public String getTitle() {
 		return title;
 	}
@@ -57,6 +64,10 @@ public class Category extends CouchDbDocument {
 
 	public void setImgSrc(String imgSrc) {
 		this.imgSrc = imgSrc;
+	}
+
+	public void setInternalName(String internalName) {
+		this.internalName = internalName;
 	}
 
 	public void setTitle(String title) {
