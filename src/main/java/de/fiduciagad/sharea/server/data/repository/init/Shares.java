@@ -23,7 +23,7 @@ import de.fiduciagad.sharea.server.data.repository.dto.Share;
 @Component
 public class Shares {
 
-	private Log logger = LogFactory.getLog(Categories.class);
+	private Log logger = LogFactory.getLog(Shares.class);
 
 	@Autowired
 	private ShareRepository shareRepository;

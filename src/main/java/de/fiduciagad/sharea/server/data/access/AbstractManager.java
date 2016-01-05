@@ -14,7 +14,7 @@ abstract public class AbstractManager<D extends CouchDbDocument, T extends Abstr
 		this.repository = repository;
 	}
 
-	public void create(D document) {
+	protected void create(D document) {
 		repository.add(document);
 	}
 

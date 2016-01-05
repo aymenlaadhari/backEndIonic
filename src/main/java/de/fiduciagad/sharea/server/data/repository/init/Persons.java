@@ -16,7 +16,7 @@ import de.fiduciagad.sharea.server.data.repository.dto.Person;
 @Component
 public class Persons {
 
-	private Log logger = LogFactory.getLog(Categories.class);
+	private Log logger = LogFactory.getLog(Persons.class);
 
 	@Autowired
 	private PersonRepository personRepository;

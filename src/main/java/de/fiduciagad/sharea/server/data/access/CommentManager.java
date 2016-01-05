@@ -16,6 +16,12 @@ public class CommentManager extends AbstractManager<Comment, CommentRepository> 
 		super(commentRepository);
 	}
 
+	public Comment create(String authorId, String text, String shareId) {
+		Comment comment = new Comment(authorId, text, shareId);
+		create(comment);
+		return comment;
+	}
+
 	public List<Comment> findByShareId(String shareId) {
 		return getRepository().findByShares(shareId);
 	}

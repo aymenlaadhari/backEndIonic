@@ -7,6 +7,8 @@ import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.google.common.collect.Sets;
+
 import de.fiduciagad.sharea.server.data.repository.ShareRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
 
@@ -25,6 +27,14 @@ public class ShareManager extends AbstractManager<Share, ShareRepository> {
 				owningPersonId, participantIds, participantLimit);
 		// TODO Add some validations: startDate in future, endDate > startDate,
 		// things not empty...
+		create(share);
+		return share;
+	}
+
+	public Share create(String title, String description, String categoryId, String icon, String startLocation,
+			String endLocation, Date startDate, Date endDate, String owningPersonId, int participantLimit) {
+		Share share = new Share(title, description, categoryId, icon, startLocation, endLocation, startDate, endDate,
+				owningPersonId, Sets.newHashSet(), participantLimit);
 		create(share);
 		return share;
 	}

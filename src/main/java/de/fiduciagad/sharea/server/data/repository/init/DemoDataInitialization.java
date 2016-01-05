@@ -22,11 +22,15 @@ public class DemoDataInitialization {
 	@Autowired
 	private Persons persons;
 
+	@Autowired
+	private DeveloperAccounts developerAccounts;
+
 	public DemoDataInitialization() {
 	}
 
 	@PostConstruct
 	public void init() {
+		developerAccounts.init();
 		List<String> personIds = persons.init();
 		Map<String, String> categoryMapping = categories.init();
 		shares.init(personIds, categoryMapping);

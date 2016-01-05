@@ -3,7 +3,11 @@ package de.fiduciagad.sharea.server.data.access;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.cloudant.client.org.lightcouch.NoDocumentException;
@@ -22,6 +26,8 @@ import de.fiduciagad.sharea.server.security.User;
 @Component
 public class AccountManager extends AbstractManager<Account, AccountRepository> {
 
+	private Log logger = LogFactory.getLog(AccountManager.class);
+
 	@Autowired
 	private AccessTokenRepository accessTokenRepository;
 
@@ -32,12 +38,20 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 	private TokenEnabledUserDetailsService userDetailsService;
 
 	@Autowired
+	Environment environment;
+
+	@Autowired
+	PasswordEncoder passwordEncoder;
+
+	@Autowired
 	public AccountManager(AccountRepository accountRepository) {
 		super(accountRepository);
 	}
 
 	/**
 	 * Adds a token to a user and returns the token value as String.
+	 *
+	 * WARNING! The user has to exist in the database!
 	 *
 	 * @param account
 	 * @param deviceName
@@ -58,7 +72,8 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 	}
 
 	@Override
-	public void create(Account account) {
+	protected void create(Account account) {
+		account.setPassword(passwordEncoder.encode(account.getPassword()));
 		getRepository().add(account);
 		for (Person person : account.getPersons()) {
 			person.setOwningAccountId(account.getId());
@@ -67,6 +82,39 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 		for (AccessToken accessToken : account.getAccessTokens()) {
 			accessToken.setOwningAccountId(account.getId());
 			accessTokenRepository.add(accessToken);
+		}
+	}
+
+	private Account create(String username, String password, String realname, AccessToken token) {
+		Account account = new Account(username, passwordEncoder.encode(password));
+		Person person = new Person(realname);
+		account.getPersons().add(person);
+		account.getAccessTokens().add(token);
+		create(account);
+		return account;
+	}
+
+	public String create(String username, String password, String realname, String deviceName, String deviceIdentifier)
+			throws GeneralSecurityException {
+		AccessToken token = AccessToken.createRandom(deviceName, deviceIdentifier);
+		create(username, password, realname, token);
+		return token.getTokenText();
+	}
+
+	public void createDeveloperAccount(String name, String username, String tokenText) {
+		if (!environment.acceptsProfiles("dev")) {
+			logger.error("Method createDeveloperAccount() should only be called in dev environments! No Data changed.");
+			return;
+		}
+		try {
+			logger.info("Create developer account for: " + username);
+			String password = "Start123";
+			String deviceName = "Developer Device";
+			AccessToken token = AccessToken.createRandom(deviceName, deviceName);
+			token.setTokenText(tokenText);
+			create(username, password, name, token);
+		} catch (GeneralSecurityException e) {
+			logger.error("Could not create developer account for: " + username);
 		}
 	}
 

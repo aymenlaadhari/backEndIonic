@@ -15,23 +15,14 @@ public class Comment extends CouchDbDocument {
 	@TypeDiscriminator(value = "doc.docType === 'Comment'")
 	private final String docType = "Comment";
 
-	private Comment() {
+	public Comment(String authorId, String text, String shareId) {
+		this.authorId = authorId;
+		this.text = text;
+		this.shareId = shareId;
 	}
 
 	public String getAuthorId() {
 		return authorId;
-	}
-
-	public void setAuthorId(String authorId) {
-		this.authorId = authorId;
-	}
-
-	public String getText() {
-		return text;
-	}
-
-	public void setText(String text) {
-		this.text = text;
 	}
 
 	public String getDocType() {
@@ -42,10 +33,20 @@ public class Comment extends CouchDbDocument {
 		return shareId;
 	}
 
+	public String getText() {
+		return text;
+	}
+
+	public void setAuthorId(String authorId) {
+		this.authorId = authorId;
+	}
+
 	public void setShareId(String shareId) {
 		this.shareId = shareId;
 	}
-	
-	
+
+	public void setText(String text) {
+		this.text = text;
+	}
 
 }

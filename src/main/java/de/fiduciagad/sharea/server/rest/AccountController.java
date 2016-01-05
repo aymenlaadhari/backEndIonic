@@ -7,7 +7,6 @@ import java.util.Map;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,9 +15,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.fiduciagad.sharea.server.data.access.AccountManager;
-import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
-import de.fiduciagad.sharea.server.data.repository.dto.Account;
-import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.rest.dto.NewAccount;
 
 @RestController
@@ -26,9 +22,6 @@ public class AccountController {
 
 	@Autowired
 	private AccountManager accountManager;
-
-	@Autowired
-	private PasswordEncoder passwordEncoder;
 
 	/**
 	 * Create a new account
@@ -58,16 +51,11 @@ public class AccountController {
 		}
 
 		try {
-			Account account = new Account(newAccount.getEmail(), passwordEncoder.encode(newAccount.getPassword()));
-			Person person = new Person(newAccount.getRealname());
-			account.getPersons().add(person);
-			AccessToken currentToken = AccessToken.createRandom(newAccount.getDeviceName(),
-					newAccount.getDeviceIdentifier());
-			account.getAccessTokens().add(currentToken);
-			accountManager.create(account);
+			String token = accountManager.create(newAccount.getEmail(), newAccount.getPassword(),
+					newAccount.getRealname(), newAccount.getDeviceName(), newAccount.getDeviceIdentifier());
 
 			// TODO send mail
-			return Collections.singletonMap("auth-token", currentToken.getTokenText());
+			return Collections.singletonMap("auth-token", token);
 		} catch (GeneralSecurityException e) {
 			throw new IllegalStateException("Cannot create token for user. ", e);
 		}

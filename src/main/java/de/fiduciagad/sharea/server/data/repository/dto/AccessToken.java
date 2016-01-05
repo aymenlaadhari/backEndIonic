@@ -19,16 +19,30 @@ public class AccessToken extends CouchDbDocument {
 
 	private static final int KEY_LENGTH = 192;
 
-	public static AccessToken createRandom(String deviceName, String deviceIdentifier) throws GeneralSecurityException {
+	/**
+	 * This should only be used for development purposes!
+	 *
+	 * @param deviceName
+	 * @param deviceIdentifier
+	 * @param tokenText
+	 * @return
+	 * @throws GeneralSecurityException
+	 */
+	private static AccessToken create(String deviceName, String deviceIdentifier, String tokenText)
+			throws GeneralSecurityException {
 		Preconditions.checkNotNull(deviceName, "A device name has to be set.");
 		Preconditions.checkNotNull(deviceIdentifier, "A device identifier has to be set.");
 
-		AccessToken token = new AccessToken(generate());
+		AccessToken token = new AccessToken(tokenText);
 		token.deviceName = deviceName;
 		token.deviceIdentifier = deviceIdentifier;
 		token.created = new Date();
 		token.lastUsed = new Date();
 		return token;
+	}
+
+	public static AccessToken createRandom(String deviceName, String deviceIdentifier) throws GeneralSecurityException {
+		return create(deviceName, deviceIdentifier, generate());
 	}
 
 	private static String generate() throws GeneralSecurityException {
@@ -70,12 +84,12 @@ public class AccessToken extends CouchDbDocument {
 		return created;
 	}
 
-	public String getDeviceName() {
-		return deviceName;
-	}
-
 	public String getDeviceIdentifier() {
 		return deviceIdentifier;
+	}
+
+	public String getDeviceName() {
+		return deviceName;
 	}
 
 	public Date getLastUsed() {
@@ -94,12 +108,12 @@ public class AccessToken extends CouchDbDocument {
 		this.created = created;
 	}
 
-	public void setDeviceName(String deviceName) {
-		this.deviceName = deviceName;
-	}
-
 	public void setDeviceIdentifier(String deviceIdentifier) {
 		this.deviceIdentifier = deviceIdentifier;
+	}
+
+	public void setDeviceName(String deviceName) {
+		this.deviceName = deviceName;
 	}
 
 	public void setLastUsed(Date lastUsed) {
