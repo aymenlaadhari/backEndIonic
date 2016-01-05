@@ -51,6 +51,7 @@ public class ShareRepository extends AbstractRepository<Share> {
 		return db.queryView(query, Share.class);
 	}
 
+	@View(name = "by_title", map = "function(doc) { if(doc.docType === 'Share' && doc.title) { emit(doc.title, doc._id) }}")
 	public List<Share> findByTitle(String title) {
 		return queryView("by_title", title);
 	}
