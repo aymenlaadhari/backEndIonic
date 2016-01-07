@@ -18,6 +18,7 @@ import de.fiduciagad.sharea.server.data.access.ShareManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
 import de.fiduciagad.sharea.server.rest.dto.FindShares;
 import de.fiduciagad.sharea.server.rest.dto.NewShare;
+import de.fiduciagad.sharea.server.rest.exception.ResourceNotFoundException;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 import de.fiduciagad.sharea.server.security.User;
 
@@ -33,7 +34,7 @@ public class ShareController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> createShare(@RequestBody(required = true) NewShare newShare,
+	public Map<String, String> createShare(@RequestBody NewShare newShare,
 			@RequestHeader(name = "X-AUTH-TOKEN") String token) {
 		User user = userDetailsService.loadUserByToken(token);
 		if (user != null) {
@@ -50,7 +51,7 @@ public class ShareController {
 	@CrossOrigin
 	@RequestMapping(value = "/api/v1/findShares", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public List<Share> findShares(@RequestBody(required = true) FindShares findShares) {
+	public List<Share> findShares(@RequestBody FindShares findShares) {
 		return shareManager.findByStartLocation(findShares.getStartLocation(), findShares.getLimit());
 	}
 
@@ -62,9 +63,28 @@ public class ShareController {
 	}
 
 	@CrossOrigin
+	@RequestMapping(value = "/api/v1/share/{id}", method = RequestMethod.PUT, produces = "application/json")
+	@ResponseBody
+	public Map<String, String> participate(@PathVariable String id,
+			@RequestHeader(name = "X-AUTH-TOKEN") String token) {
+		User user = userDetailsService.loadUserByToken(token);
+		if (user != null) {
+			Share share = shareManager.get(id);
+			if (share == null) {
+				throw new ResourceNotFoundException("Could not find share with id: " + id);
+			}
+			share.getParticipantIds().add(user.getAccount().getId());
+			shareManager.update(share);
+			return Collections.singletonMap("success", Boolean.TRUE.toString());
+		} else {
+			throw new IllegalStateException("Could not find user for token.");
+		}
+	}
+
+	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> updateShare(@RequestBody(required = true) Share share) {
+	public Map<String, String> updateShare(@RequestBody Share share) {
 		shareManager.update(share);
 		return Collections.singletonMap("id", share.getId());
 	}
