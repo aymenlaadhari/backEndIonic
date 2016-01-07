@@ -99,6 +99,15 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// TODO1: Only allow read access to shares
 				.antMatchers("/api/v1/share/*").permitAll()//
 				.antMatchers("/logout").permitAll()//
+				// springfox documentation :-)))
+				.antMatchers("/api-docs/**").permitAll()//
+				.antMatchers("/configuration/security").permitAll()//
+				.antMatchers("/swagger-resources/**").permitAll()//
+				.antMatchers("/configuration/ui/**").permitAll()//
+				.antMatchers("/v2/api-docs/**").permitAll()//
+				.antMatchers("/swagger-ui.html").permitAll()//
+				.antMatchers("/webjars/springfox-swagger-ui/**").permitAll()//
+				.antMatchers("/images/**").permitAll()//
 				.anyRequest().authenticated().and()//
 				.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
