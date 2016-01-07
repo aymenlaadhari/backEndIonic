@@ -21,6 +21,9 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import de.fiduciagad.sharea.server.security.TokenAuthenticationFilter;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
@@ -61,6 +64,16 @@ class CloudConfiguration extends AbstractCloudConfig {
 		// database.
 		return cloud.getSingletonServiceConnector(CouchDbInstance.class, null);
 	}
+	
+	@Bean
+    public WebMvcConfigurer corsConfigurer() {
+        return new WebMvcConfigurerAdapter() {
+            @Override
+            public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/*").allowedOrigins("http://localhost:8100");
+            }
+        };
+    }
 
 }
 
@@ -91,7 +104,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 	}
-
+	
 	@Bean
 	protected PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
