@@ -56,22 +56,6 @@ class CloudConfiguration extends AbstractCloudConfig {
 	}
 
 	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/*").allowedOrigins("http://localhost:8100",
-						"http://https://sharedotadotdev-java.eu-gb.mybluemix.net");
-			}
-		};
-	}
-
-	@Bean
-	public Filter corsFilter() {
-		return new CorsFilter();
-	}
-
-	@Bean
 	public CouchDbConnector couchDbConnector() {
 		return couchDbInstance().createConnector(dbName, true);
 	}
@@ -124,6 +108,22 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	public UserDetailsService userDetailsServiceBean() throws Exception {
 		return userDetailsService;
+	}
+	
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/*").allowedOrigins("http://localhost:8100",
+														 "http://sharedotadotdev.eu-gb.mybluemix.net");
+			}
+		};
+	}
+
+	@Bean
+	public Filter corsFilter() {
+		return new CorsFilter();
 	}
 
 }
