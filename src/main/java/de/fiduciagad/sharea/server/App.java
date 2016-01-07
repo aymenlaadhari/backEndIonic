@@ -129,7 +129,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/*").allowedOrigins("http://localhost:8100",
-						"http://sharedotadotdev.eu-gb.mybluemix.net");
+						"http://sharedotadotdev.eu-gb.mybluemix.net",
+						"https://sharedotadotdev.eu-gb.mybluemix.net");
 			}
 		};
 	}
