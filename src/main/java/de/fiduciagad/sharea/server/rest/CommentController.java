@@ -5,10 +5,10 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -34,15 +34,11 @@ public class CommentController {
 	@RequestMapping(value = "/api/v1/comment", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, String> createComment(@RequestBody(required = true) NewComment newComment,
-			@RequestHeader(name = "X-AUTH-TOKEN") String token) {
-		User user = userDetailsService.loadUserByToken(token);
-		if (user != null) {
-			Comment comment = commentManager.create(user.getAccount().getId(), newComment.getText(),
-					newComment.getShareId());
-			return Collections.singletonMap("id", comment.getId());
-		} else {
-			throw new IllegalStateException("Could not find user for token.");
-		}
+			Authentication authentication) {
+		User user = (User) authentication.getPrincipal();
+		Comment comment = commentManager.create(user.getAccount().getId(), newComment.getText(),
+				newComment.getShareId());
+		return Collections.singletonMap("id", comment.getId());
 	}
 
 	@CrossOrigin

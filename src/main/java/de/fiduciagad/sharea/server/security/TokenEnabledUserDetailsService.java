@@ -6,7 +6,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
@@ -19,11 +18,11 @@ import de.fiduciagad.sharea.server.data.access.AccountManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
 import de.fiduciagad.sharea.server.data.repository.dto.Account.Role;
 
-@Service
+@Service("userDetailsService")
 public final class TokenEnabledUserDetailsService implements UserDetailsService {
 
 	@Autowired
-	private AccountManager accountHandler;
+	private AccountManager accountManager;
 
 	public TokenEnabledUserDetailsService() {
 	}
@@ -44,18 +43,19 @@ public final class TokenEnabledUserDetailsService implements UserDetailsService 
 	}
 
 	public User loadUserByToken(String token) throws UsernameNotFoundException {
-		Account account = accountHandler.getAccountByToken(token);
+		Account account = accountManager.getAccountByToken(token);
+
 		if (account != null) {
 			List<GrantedAuthority> grantedAuthorities = getAuthorities(account);
-			return new User(account, grantedAuthorities);
+			return new User(account, token, grantedAuthorities);
 		} else {
-			return null;
+			throw new UsernameNotFoundException("Could not find user for token.");
 		}
 	}
 
 	@Override
-	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-		Account account = accountHandler.getAccountByEmail(email);
+	public User loadUserByUsername(String email) throws UsernameNotFoundException {
+		Account account = accountManager.getAccountByEmail(email);
 		if (account != null) {
 			List<GrantedAuthority> grantedAuthorities = getAuthorities(account);
 			return new User(account, grantedAuthorities);

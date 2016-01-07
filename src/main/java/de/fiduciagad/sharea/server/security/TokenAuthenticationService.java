@@ -23,7 +23,7 @@ public class TokenAuthenticationService {
 		if (token != null) {
 			final User user = userDetailsService.loadUserByToken(token);
 			if (user != null) {
-				return new PreAuthenticatedAuthenticationToken(user.getUsername(), token, user.getAuthorities());
+				return new PreAuthenticatedAuthenticationToken(user, token, user.getAuthorities());
 			}
 		}
 		return null;

@@ -15,7 +15,6 @@ import com.cloudant.client.org.lightcouch.NoDocumentException;
 import com.google.common.collect.Sets;
 
 import de.fiduciagad.sharea.server.data.exceptions.ModificationException;
-import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
 import de.fiduciagad.sharea.server.data.repository.PersonRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
@@ -30,7 +29,7 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 	private Log logger = LogFactory.getLog(AccountManager.class);
 
 	@Autowired
-	private AccessTokenRepository accessTokenRepository;
+	private AccessTokenManager accessTokenManager;
 
 	@Autowired
 	private PersonRepository personRepository;
@@ -64,7 +63,7 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 		try {
 			AccessToken token = AccessToken.createRandom(deviceName, deviceIdentifier);
 			token.setOwningAccountId(account.getId());
-			accessTokenRepository.add(token);
+			accessTokenManager.create(token);
 			return token.getTokenText();
 		} catch (GeneralSecurityException e) {
 			throw new ModificationException("Could not add token to user.", e);
@@ -75,14 +74,14 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 	@Override
 	protected void create(Account account) {
 		account.setPassword(passwordEncoder.encode(account.getPassword()));
-		getRepository().add(account);
+		super.create(account);
 		for (Person person : account.getPersons()) {
 			person.setOwningAccountId(account.getId());
 			personRepository.add(person);
 		}
 		for (AccessToken accessToken : account.getAccessTokens()) {
 			accessToken.setOwningAccountId(account.getId());
-			accessTokenRepository.add(accessToken);
+			accessTokenManager.create(accessToken);
 		}
 	}
 
@@ -154,7 +153,7 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 	public Account getAccountByEmail(String email, boolean eagerFetch) {
 		Account account = getRepository().findByEmail(email);
 		if (eagerFetch && account != null) {
-			List<AccessToken> tokens = accessTokenRepository.findByOwningAccount(account);
+			List<AccessToken> tokens = accessTokenManager.findByOwningAccount(account);
 			account.setAccessTokens(Sets.newHashSet(tokens));
 			Person persons = personRepository.findByOwningAccountId(account.getId());
 			account.setPersons(Sets.newHashSet(persons));
@@ -163,7 +162,7 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 	}
 
 	public Account getAccountByToken(String tokenText) {
-		AccessToken accessToken = accessTokenRepository.findByTokenText(tokenText);
+		AccessToken accessToken = accessTokenManager.findByTokenText(tokenText);
 		if (accessToken != null) {
 			try {
 				return getRepository().get(accessToken.getOwningAccountId());
@@ -176,6 +175,19 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 
 	public User getUserByToken(String tokenText) {
 		return userDetailsService.loadUserByToken(tokenText);
+	}
+
+	@Override
+	public void update(Account account) {
+		super.update(account);
+		for (Person person : account.getPersons()) {
+			person.setOwningAccountId(account.getId());
+			personRepository.update(person);
+		}
+		for (AccessToken accessToken : account.getAccessTokens()) {
+			accessToken.setOwningAccountId(account.getId());
+			accessTokenManager.update(accessToken);
+		}
 	}
 
 	public boolean validateUser(User user, String tokenText) {
