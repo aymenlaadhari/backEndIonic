@@ -13,3 +13,8 @@ Share.A-java
 | Add Access Token to Account | /api/v1/account?id=<id> | POST            |
 
 ### 
+
+
+### for development
+
+http://sharedotadotdev-java.eu-gb.mybluemix.net/
