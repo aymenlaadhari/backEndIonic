@@ -2,6 +2,8 @@ package de.fiduciagad.sharea.server.rest.dto;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class NewShare {
 
 	private String title;
@@ -9,11 +11,13 @@ public class NewShare {
 	private String description;
 	private String icon;
 	private String startLocation;
-
 	private String endLocation;
-	private Date startDate;
 
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+	private Date startDate;
+	@DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
 	private Date endDate;
+
 	private int participantLimit;
 
 	private String categoryId;
