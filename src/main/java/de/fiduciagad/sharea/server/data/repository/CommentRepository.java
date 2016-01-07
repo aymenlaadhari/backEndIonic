@@ -15,15 +15,17 @@ import de.fiduciagad.sharea.server.data.repository.dto.Comment;
 @Component
 public class CommentRepository extends AbstractRepository<Comment> {
 
+	private static final String FIND_COMMENTS = "findComments";
+
 	@Autowired
 	public CommentRepository(CouchDbConnector db) {
 		super(Comment.class, db);
 	}
 
-	@View(name = "findComments", map = "function(doc) { if (doc.docType === 'Comment' ) emit( doc.shareId, doc._id )}")
+	@View(name = FIND_COMMENTS, map = "function(doc) { if (doc.docType === 'Comment' ) emit( doc.shareId, doc._id )}")
 	public List<Comment> findByShares(String shareId) {
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(shareId), "ShareId cannot be empty.");
-		return queryView("findComments", shareId);
+		return queryView(FIND_COMMENTS, shareId);
 	}
 
 };

@@ -20,17 +20,21 @@ import de.fiduciagad.sharea.server.data.repository.dto.Share;
 @Component
 public class ShareRepository extends AbstractRepository<Share> {
 
+	private static final String BY_TITLE = "by_title";
+	private static final String BY_START_LOCATION_BY_DATE = "by_startLocation_by_date";
+	private static final String BY_CATEGORY_ID = "by_categoryId";
+
 	@Autowired
 	public ShareRepository(CouchDbConnector db) {
 		super(Share.class, db);
 	}
 
-	@View(name = "by_categoryId", map = "function(doc) { if(doc.docType === 'Share' && doc.categoryId) { emit(doc.categoryId, doc._id) }}")
+	@View(name = BY_CATEGORY_ID, map = "function(doc) { if(doc.docType === 'Share' && doc.categoryId) { emit(doc.categoryId, doc._id) }}")
 	public List<Share> findByCategory(Category category) {
-		return queryView("by_categoryId", category.getId());
+		return queryView(BY_CATEGORY_ID, category.getId());
 	}
 
-	@View(name = "by_startLocation_by_date", map = "classpath:/de/fiduciagad/sharea/server/data/repository/functions/by_location_by_date.js")
+	@View(name = BY_START_LOCATION_BY_DATE, map = "classpath:/de/fiduciagad/sharea/server/data/repository/functions/by_location_by_date.js")
 	public List<Share> findByStartLocation(String startLocation, int limit) {
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(startLocation), "Location cannot be empty.");
 
@@ -44,15 +48,15 @@ public class ShareRepository extends AbstractRepository<Share> {
 		ComplexKey startKey = ComplexKey.of(startLocation, now);
 		ComplexKey endKey = ComplexKey.of(startLocation, ComplexKey.emptyObject());
 
-		ViewQuery query = new ViewQuery().designDocId(stdDesignDocumentId).viewName("by_startLocation_by_date")
+		ViewQuery query = new ViewQuery().designDocId(stdDesignDocumentId).viewName(BY_START_LOCATION_BY_DATE)
 				.includeDocs(true).startKey(startKey).endKey(endKey).limit(limit);
 
 		return db.queryView(query, Share.class);
 	}
 
-	@View(name = "by_title", map = "function(doc) { if(doc.docType === 'Share' && doc.title) { emit(doc.title, doc._id) }}")
+	@View(name = BY_TITLE, map = "function(doc) { if(doc.docType === 'Share' && doc.title) { emit(doc.title, doc._id) }}")
 	public List<Share> findByTitle(String title) {
-		return queryView("by_title", title);
+		return queryView(BY_TITLE, title);
 	}
 
 };

@@ -12,14 +12,16 @@ import de.fiduciagad.sharea.server.data.repository.dto.Event;
 @Component
 public class EventRepository extends AbstractRepository<Event> {
 
+	private static final String BY_LOCATION = "by_location";
+
 	@Autowired
 	public EventRepository(CouchDbConnector db) {
 		super(Event.class, db);
 	}
 
-	@View(name = "by_location", map = "function(doc) { if(doc.docType === 'Event' && doc.location) {emit(doc.location, doc._id)} }")
+	@View(name = BY_LOCATION, map = "function(doc) { if(doc.docType === 'Event' && doc.location) {emit(doc.location, doc._id)} }")
 	public List<Event> findByLocation(String location) {
-		return queryView("by_location", location);
+		return queryView(BY_LOCATION, location);
 	}
 
 };
