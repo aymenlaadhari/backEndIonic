@@ -32,30 +32,42 @@ public class Shares {
 
 	private List<String> personIds;
 
-	private Date currentDate;
-
 	public Shares() {
 		// TODO Auto-generated constructor stub
 	}
 
 	private Share createShare(String internalCategoryName, String title, String description, String icon,
-			String startLocation, String endLocation) {
+			String startLocation, String endLocation, Date startDate) {
 
 		String owner = getOwner();
-
-		Date startDate = null;
-		Date endDate = null;
-		if (new Random().nextBoolean()) {
-			startDate = DateUtils.addDays(currentDate, new Random().nextInt(3));
-			endDate = DateUtils.addHours(startDate, new Random().nextInt(5));
-		} else {
-			startDate = DateUtils.addHours(currentDate, new Random().nextInt(5));
-			endDate = DateUtils.addHours(startDate, new Random().nextInt(2));
-		}
-
 		Set<String> participants = getParticipants(owner);
 		return new Share(title, description, getIdForCategory(internalCategoryName), icon, startLocation, endLocation,
-				startDate, endDate, owner, participants, participants.size() + new Random().nextInt(10));
+				startDate, DateUtils.addHours(startDate, 1), owner, participants,
+				participants.size() + new Random().nextInt(10));
+	}
+
+	private void createShares(List<String> personIds, Map<String, String> categoryMapping, Date startDate) {
+		this.personIds = personIds;
+		this.categoryMapping = categoryMapping;
+		Preconditions.checkArgument(personIds != null && personIds.size() >= 6,
+				"Need at least six persons for meaningful example data.");
+		Preconditions.checkArgument(categoryMapping != null && categoryMapping.size() >= 3,
+				"Need at least three categories.");
+
+		List<Share> shares = Lists.newArrayList(//
+				createShare("travel-together", "HBF Karlsruhe zu Standort Karlsruhe", "", "ion-md-car", "HBF Karlsruhe",
+						"Standort Karlsruhe", startDate), //
+				createShare("travel-together", "HBF Münster zu Standort Münster", "", "ion-md-car", "HBF Münster",
+						"Standort Münster", startDate), //
+				createShare("eat-together", "Betriebsrestaurant München", "", "ion-md-restaurant", "München", "",
+						startDate), //
+				createShare("eat-together", "Kaffee trinken", "", "ion-md-cafe", "Berlin", "", startDate), //
+				createShare("share-office", "Büro Frankfurt", "", "ion-ios-monitor", "Frankfurt", "", startDate) //
+		);
+		for (Share share : shares) {
+			logger.info("Add example share: " + share.getTitle());
+			shareRepository.add(share);
+		}
 	}
 
 	private String getIdForCategory(String internalName) {
@@ -81,31 +93,24 @@ public class Shares {
 	}
 
 	public void init(List<String> personIds, Map<String, String> categoryMapping) {
-		currentDate = new Date();
-		this.personIds = personIds;
-		this.categoryMapping = categoryMapping;
-		Preconditions.checkArgument(personIds != null && personIds.size() >= 6,
-				"Need at least six persons for meaningful example data.");
-		Preconditions.checkArgument(categoryMapping != null && categoryMapping.size() >= 3,
-				"Need at least three categories.");
-
-		List<Share> shares = Lists.newArrayList(//
-				createShare("travel-together", "HBF Karlsruhe zu Standort Karlsruhe", "", "ion-md-car", "HBF Karlsruhe",
-						"Standort Karlsruhe"), //
-				createShare("travel-together", "HBF Münster zu Standort Münster", "", "ion-md-car", "HBF Münster",
-						"Standort Münster"), //
-				createShare("eat-together", "Betriebsrestaurant München", "", "ion-md-restaurant", "München", ""), //
-				createShare("eat-together", "Kaffee trinken", "", "ion-md-cafe", "Berlin", ""), //
-				createShare("share-office", "Büro Frankfurt", "", "ion-ios-monitor", "Frankfurt", "") //
+		Date currentDate = new Date();
+		List<Date> dates = Lists.newArrayList(//
+				DateUtils.addHours(currentDate, 2), //
+				DateUtils.addHours(currentDate, 7), //
+				DateUtils.addDays(currentDate, 1), //
+				DateUtils.addHours(DateUtils.addDays(currentDate, 3), 1), //
+				DateUtils.addHours(DateUtils.addDays(currentDate, 1), 2), //
+				DateUtils.addHours(DateUtils.addDays(currentDate, 2), 2), //
+				DateUtils.addHours(DateUtils.addDays(currentDate, 2), 5), //
+				DateUtils.addHours(DateUtils.addDays(currentDate, 3), 5), //
+				DateUtils.addHours(DateUtils.addDays(currentDate, 1), 7), //
+				DateUtils.addMonths(currentDate, 2), //
+				DateUtils.addMonths(currentDate, 4), //
+				DateUtils.addMonths(currentDate, 6)//
 		);
-		for (Share share : shares) {
-			List<Share> dbResult = shareRepository.findByTitle(share.getTitle());
-			if (dbResult.isEmpty()) {
-				logger.info("Add example share: " + share.getTitle());
-				shareRepository.add(share);
-			} else {
-				logger.info("Did not add example share: " + share.getTitle());
-			}
+
+		for (Date date : dates) {
+			createShares(personIds, categoryMapping, date);
 		}
 	}
 

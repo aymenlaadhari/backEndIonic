@@ -7,19 +7,20 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 import com.cloudant.client.org.lightcouch.NoDocumentException;
 import com.google.common.collect.Sets;
 
+import de.fiduciagad.sharea.server.data.exceptions.ModificationException;
 import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
 import de.fiduciagad.sharea.server.data.repository.PersonRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
 import de.fiduciagad.sharea.server.data.repository.dto.Person;
-import de.fiduciagad.sharea.server.dto.exceptions.ModificationException;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 import de.fiduciagad.sharea.server.security.User;
 
@@ -85,8 +86,11 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 		}
 	}
 
-	private Account create(String username, String password, String realname, AccessToken token) {
-		Account account = new Account(username, passwordEncoder.encode(password));
+	private Account create(String email, String password, String realname, AccessToken token) {
+		if (getRepository().findByEmail(email) != null) {
+			throw new DuplicateKeyException("User already exists.");
+		}
+		Account account = new Account(email, passwordEncoder.encode(password));
 		Person person = new Person(realname);
 		account.getPersons().add(person);
 		account.getAccessTokens().add(token);
@@ -94,16 +98,20 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 		return account;
 	}
 
-	public String create(String username, String password, String realname, String deviceName, String deviceIdentifier)
+	public String create(String email, String password, String realname, String deviceName, String deviceIdentifier)
 			throws GeneralSecurityException {
 		AccessToken token = AccessToken.createRandom(deviceName, deviceIdentifier);
-		create(username, password, realname, token);
+		create(email, password, realname, token);
 		return token.getTokenText();
 	}
 
 	public void createDeveloperAccount(String name, String username, String tokenText) {
 		if (!environment.acceptsProfiles("dev")) {
 			logger.error("Method createDeveloperAccount() should only be called in dev environments! No Data changed.");
+			return;
+		}
+		if (getRepository().findByEmail(username) != null) {
+			logger.info("Skipping creation of developer account " + username + ". Account already exists.");
 			return;
 		}
 		try {

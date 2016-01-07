@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.fiduciagad.sharea.server.data.access.AccountManager;
+import de.fiduciagad.sharea.server.data.exceptions.ModificationException;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
-import de.fiduciagad.sharea.server.dto.exceptions.ModificationException;
 import de.fiduciagad.sharea.server.rest.dto.NewToken;
 
 @RestController

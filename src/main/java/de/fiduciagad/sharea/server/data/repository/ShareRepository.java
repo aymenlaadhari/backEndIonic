@@ -1,9 +1,9 @@
 package de.fiduciagad.sharea.server.data.repository;
 
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.time.DateUtils;
 import org.ektorp.ComplexKey;
 import org.ektorp.CouchDbConnector;
 import org.ektorp.ViewQuery;
@@ -34,16 +34,15 @@ public class ShareRepository extends AbstractRepository<Share> {
 	public List<Share> findByStartLocation(String startLocation, int limit) {
 		Preconditions.checkArgument(!Strings.isNullOrEmpty(startLocation), "Location cannot be empty.");
 
-		if (limit == 0) {
+		if (limit < 1) {
 			limit = 10;
 		}
 
 		// From now till the future!
-		Calendar nextYear = Calendar.getInstance();
-		nextYear.add(Calendar.YEAR, 1);
 		Date now = new Date();
+		Date nextYear = DateUtils.addYears(now, 1);
 		ComplexKey startKey = ComplexKey.of(startLocation, now);
-		ComplexKey endKey = ComplexKey.of(startLocation, nextYear);
+		ComplexKey endKey = ComplexKey.of(startLocation, ComplexKey.emptyObject());
 
 		ViewQuery query = new ViewQuery().designDocId(stdDesignDocumentId).viewName("by_startLocation_by_date")
 				.includeDocs(true).startKey(startKey).endKey(endKey).limit(limit);

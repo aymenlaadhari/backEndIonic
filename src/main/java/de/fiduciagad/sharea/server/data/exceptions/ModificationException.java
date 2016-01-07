@@ -1,4 +1,4 @@
-package de.fiduciagad.sharea.server.dto.exceptions;
+package de.fiduciagad.sharea.server.data.exceptions;
 
 public class ModificationException extends Exception {
 
