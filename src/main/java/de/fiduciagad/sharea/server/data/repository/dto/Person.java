@@ -12,8 +12,6 @@ public class Person extends CouchDbDocument {
 
 	private String owningAccountId;
 
-	private String type;
-
 	@JsonProperty("docType")
 	@TypeDiscriminator(value = "doc.docType === 'Person'")
 	private final String docType = "Person";
@@ -41,14 +39,6 @@ public class Person extends CouchDbDocument {
 
 	public void setOwningAccountId(String owningAccountId) {
 		this.owningAccountId = owningAccountId;
-	}
-
-	public String getType() {
-		return type;
-	}
-
-	public void setType(String type) {
-		this.type = type;
 	}
 
 }
