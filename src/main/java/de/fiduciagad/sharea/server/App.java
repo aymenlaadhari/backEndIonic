@@ -56,6 +56,22 @@ class CloudConfiguration extends AbstractCloudConfig {
 	}
 
 	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/*").allowedOrigins("http://localhost:8100",
+						"http://https://sharedotadotdev-java.eu-gb.mybluemix.net");
+			}
+		};
+	}
+
+	@Bean
+	public Filter corsFilter() {
+		return new CorsFilter();
+	}
+
+	@Bean
 	public CouchDbConnector couchDbConnector() {
 		return couchDbInstance().createConnector(dbName, true);
 	}
@@ -67,23 +83,6 @@ class CloudConfiguration extends AbstractCloudConfig {
 		// database.
 		return cloud.getSingletonServiceConnector(CouchDbInstance.class, null);
 	}
-
-	@Bean
-	public WebMvcConfigurer corsConfigurer() {
-		return new WebMvcConfigurerAdapter() {
-			@Override
-			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/*")
-						.allowedOrigins("http://localhost:8100", 
-										"http://https://sharedotadotdev-java.eu-gb.mybluemix.net");
-			}
-		};
-	}
-
-	@Bean
-	public Filter corsFilter() {
-		return new CorsFilter();
-	}
 }
 
 @EnableWebSecurity
@@ -93,9 +92,12 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	@Autowired
 	private TokenAuthenticationFilter tokenAuthenticationFilter;
 
+	@Autowired
+	private TokenEnabledUserDetailsService userDetailsService;
+
 	@Override
 	protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-		auth.userDetailsService(userDetailsService()).passwordEncoder(passwordEncoder());
+		auth.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
 	}
 
 	@Override
@@ -119,13 +121,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new BCryptPasswordEncoder();
 	}
 
-	public TokenEnabledUserDetailsService tokenEnabledUserDetailsService() throws Exception {
-		return new TokenEnabledUserDetailsService();
-	}
-
 	@Override
 	public UserDetailsService userDetailsServiceBean() throws Exception {
-		return new TokenEnabledUserDetailsService();
+		return userDetailsService;
 	}
 
 }
