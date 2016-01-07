@@ -2,7 +2,6 @@ package de.fiduciagad.sharea.server.data.access;
 
 import java.util.List;
 
-import org.ektorp.DocumentNotFoundException;
 import org.ektorp.support.CouchDbDocument;
 
 import de.fiduciagad.sharea.server.data.repository.AbstractRepository;
@@ -24,11 +23,7 @@ abstract public class AbstractManager<D extends CouchDbDocument, T extends Abstr
 	}
 
 	public D get(String id) {
-		try {
-			return repository.get(id);
-		} catch (DocumentNotFoundException e) {
-			return null;
-		}
+		return repository.get(id);
 	}
 
 	public List<D> getAll() {
