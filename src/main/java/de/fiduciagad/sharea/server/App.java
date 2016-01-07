@@ -14,6 +14,7 @@ import org.springframework.cloud.config.java.AbstractCloudConfig;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -99,6 +100,8 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				// TODO1: Only allow read access to shares
 				.antMatchers("/api/v1/share/*").permitAll()//
 				.antMatchers("/logout").permitAll()//
+				// allow all cors-preflight options requests
+				.antMatchers(HttpMethod.OPTIONS, "/api/v1/findShares").permitAll()
 				// springfox documentation :-)))
 				.antMatchers("/api-docs/**").permitAll()//
 				.antMatchers("/configuration/security").permitAll()//
