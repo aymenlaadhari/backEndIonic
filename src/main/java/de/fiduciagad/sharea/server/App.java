@@ -1,5 +1,7 @@
 package de.fiduciagad.sharea.server;
 
+import javax.servlet.Filter;
+
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,7 +81,7 @@ class CloudConfiguration extends AbstractCloudConfig {
 	}
 
 	@Bean
-	public CorsFilter corsFilter() {
+	public Filter corsFilter() {
 		return new CorsFilter();
 	}
 }
