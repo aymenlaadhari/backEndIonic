@@ -27,6 +27,8 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import springfox.documentation.swagger1.annotations.EnableSwagger;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 import de.fiduciagad.sharea.server.security.CorsFilter;
 import de.fiduciagad.sharea.server.security.TokenAuthenticationFilter;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
@@ -34,6 +36,8 @@ import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 @Configuration
 @ComponentScan
 @EnableAutoConfiguration
+@EnableSwagger
+@EnableSwagger2
 public class App {
 
 	public static void main(String[] args) throws Exception {
@@ -109,14 +113,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 	public UserDetailsService userDetailsServiceBean() throws Exception {
 		return userDetailsService;
 	}
-	
+
 	@Bean
 	public WebMvcConfigurer corsConfigurer() {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/*").allowedOrigins("http://localhost:8100",
-														 "http://sharedotadotdev.eu-gb.mybluemix.net");
+						"http://sharedotadotdev.eu-gb.mybluemix.net");
 			}
 		};
 	}
