@@ -1,5 +1,7 @@
 package de.fiduciagad.sharea.server;
 
+import javax.servlet.Filter;
+
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
+import de.fiduciagad.sharea.server.security.CorsFilter;
 import de.fiduciagad.sharea.server.security.TokenAuthenticationFilter;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 
@@ -64,17 +67,23 @@ class CloudConfiguration extends AbstractCloudConfig {
 		// database.
 		return cloud.getSingletonServiceConnector(CouchDbInstance.class, null);
 	}
-	
-	@Bean
-    public WebMvcConfigurer corsConfigurer() {
-        return new WebMvcConfigurerAdapter() {
-            @Override
-            public void addCorsMappings(CorsRegistry registry) {
-                registry.addMapping("/*").allowedOrigins("http://localhost:8100");
-            }
-        };
-    }
 
+	@Bean
+	public WebMvcConfigurer corsConfigurer() {
+		return new WebMvcConfigurerAdapter() {
+			@Override
+			public void addCorsMappings(CorsRegistry registry) {
+				registry.addMapping("/*")
+						.allowedOrigins("http://localhost:8100", 
+										"http://https://sharedotadotdev-java.eu-gb.mybluemix.net");
+			}
+		};
+	}
+
+	@Bean
+	public Filter corsFilter() {
+		return new CorsFilter();
+	}
 }
 
 @EnableWebSecurity
@@ -104,7 +113,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 	}
-	
+
 	@Bean
 	protected PasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
