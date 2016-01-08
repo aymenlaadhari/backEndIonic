@@ -18,25 +18,30 @@ import de.fiduciagad.sharea.server.security.User;
 @RestController
 public class PersonController {
 
+	public static final String API_PERSON = "/api/" + AbstractController.API_VERSION + "/person";
+
+	public static final String API_PERSON_RANDOM = "/api/" + AbstractController.API_VERSION + "/person/random";
+
 	@Autowired
 	private PersonManager personManager;
 
-	@RequestMapping(value = "/api/v1/person", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = API_PERSON, method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Person getPerson(Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
 		return personManager.findByAccount(user.getAccount());
 	}
 
-	@RequestMapping(value = "/api/v1/person/{id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = API_PERSON + "/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Person getPerson(@PathVariable String id) {
 		return personManager.get(id);
 	}
 
-	@RequestMapping(value = "/api/v1/person/random", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = API_PERSON_RANDOM, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Person getPerson() {
+		// TODO improve!!!
 		List<Person> all = personManager.getAll();
 		return all.get(new Random().nextInt(all.size()));
 	}

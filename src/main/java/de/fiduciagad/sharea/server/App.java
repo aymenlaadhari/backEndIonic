@@ -26,10 +26,11 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
-import springfox.documentation.swagger1.annotations.EnableSwagger;
-import springfox.documentation.swagger2.annotations.EnableSwagger2;
+import de.fiduciagad.sharea.server.rest.PersonController;
 import de.fiduciagad.sharea.server.security.TokenAuthenticationFilter;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
+import springfox.documentation.swagger1.annotations.EnableSwagger;
+import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 @Configuration
 @ComponentScan
@@ -92,7 +93,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()//
 				.authorizeRequests()//
 				// .antMatchers("/api/v1/data").permitAll()//
-				.antMatchers("/api/v1/person/random").permitAll()//
+				.antMatchers(PersonController.API_PERSON_RANDOM).permitAll()//
 				.antMatchers("/api/v1/account").permitAll()//
 				.antMatchers("/api/v1/token").permitAll()//
 				// TODO1: Only allow read access to shares
@@ -129,31 +130,14 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry
-					.addMapping("/api/**")
-						.allowedOrigins(
-								"http://localhost:8100",
-								"http://sharedotadotdev.eu-gb.mybluemix.net",
+				registry.addMapping("/api/**")
+						.allowedOrigins("http://localhost:8100", "http://sharedotadotdev.eu-gb.mybluemix.net",
 								"https://sharedotadotdev.eu-gb.mybluemix.net")
-						.allowedHeaders(
-								"Content-Type", 
-								"Accept", 
-								"X-Requested-With", 
-								"remember-me",
-								"x-auth-token", 
-								"cache-control", 
-								"user-agent")
-						.exposedHeaders(
-								"Content-Type", 
-								"Accept", 
-								"X-Requested-With", 
-								"remember-me",
-								"x-auth-token", 
-								"cache-control", 
-								"user-agent")
-						.allowedMethods("POST", "GET", "OPTIONS")
-						.allowCredentials(true)
-						.maxAge(3600);
+						.allowedHeaders("Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token",
+								"cache-control", "user-agent")
+						.exposedHeaders("Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token",
+								"cache-control", "user-agent")
+						.allowedMethods("POST", "GET", "OPTIONS").allowCredentials(true).maxAge(3600);
 			}
 		};
 	}

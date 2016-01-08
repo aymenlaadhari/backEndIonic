@@ -22,11 +22,13 @@ import org.springframework.web.bind.annotation.RestController;
 @ControllerAdvice(annotations = RestController.class)
 public class AbstractController {
 
+	public static final String API_VERSION = "v1";
+
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(DocumentNotFoundException.class)
 	public void catchDocumentNotFoundException() {
 	}
-	
+
 	@ResponseStatus(value = HttpStatus.CONFLICT)
 	@ExceptionHandler(UpdateConflictException.class)
 	public void catchUpdateConflictException() {
