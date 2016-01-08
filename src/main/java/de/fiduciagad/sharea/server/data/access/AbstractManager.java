@@ -37,4 +37,8 @@ abstract public class AbstractManager<D extends CouchDbDocument, T extends Abstr
 	public void update(D document) {
 		repository.update(document);
 	}
+	
+	public void delete(D document){
+		repository.remove(document);
+	}
 }

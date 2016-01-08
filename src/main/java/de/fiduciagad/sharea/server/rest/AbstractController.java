@@ -1,6 +1,7 @@
 package de.fiduciagad.sharea.server.rest;
 
 import org.ektorp.DocumentNotFoundException;
+import org.ektorp.UpdateConflictException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -24,6 +25,11 @@ public class AbstractController {
 	@ResponseStatus(value = HttpStatus.NOT_FOUND)
 	@ExceptionHandler(DocumentNotFoundException.class)
 	public void catchDocumentNotFoundException() {
+	}
+	
+	@ResponseStatus(value = HttpStatus.CONFLICT)
+	@ExceptionHandler(UpdateConflictException.class)
+	public void catchUpdateConflictException() {
 	}
 
 }

@@ -4,6 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.ektorp.UpdateConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,7 +19,6 @@ import de.fiduciagad.sharea.server.data.access.PersonManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Comment;
 import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.rest.dto.FindComments;
-import de.fiduciagad.sharea.server.rest.dto.NewComment;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 import de.fiduciagad.sharea.server.security.User;
 
@@ -35,12 +35,12 @@ public class CommentController {
 
 	@RequestMapping(value = "/api/v1/comment", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> createComment(@RequestBody(required = true) NewComment newComment,
+	public Map<String, String> createComment(@RequestBody(required = true) Comment comment,
 			Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
 		Person person = personManager.findByAccount(user.getAccount());
-		Comment comment = commentManager.create(person.getId(), newComment.getText(),
-				newComment.getShareId());
+		comment = commentManager.create(person.getId(), comment.getText(),
+				comment.getShareId(), comment.getName(), comment.getCommentDate());
 		return Collections.singletonMap("id", comment.getId());
 	}
 
@@ -54,6 +54,34 @@ public class CommentController {
 	@ResponseBody
 	public Comment getComment(@PathVariable String id) {
 		return commentManager.get(id);
+	}
+	
+	@RequestMapping(value = "/api/v1/comment/{id}", method = RequestMethod.DELETE, produces = "application/json")
+	@ResponseBody
+	public Map<String, String> deleteComment(@PathVariable String id, Authentication authentication) {
+		User user = (User) authentication.getPrincipal();
+		Person person = personManager.findByAccount(user.getAccount());
+		Comment comment = commentManager.get(id);
+		if(person.getId().equals(comment.getOwningPersonId())){
+			commentManager.delete(comment);
+			return Collections.singletonMap("success", Boolean.TRUE.toString());
+		}
+		else{
+			return Collections.singletonMap("success", Boolean.FALSE.toString());
+		}
+	}
+	
+	@RequestMapping(value = "/api/v1/comment", method = RequestMethod.PUT, produces = "application/json")
+	@ResponseBody
+	public Map<String, String> update(@RequestBody(required = true) Comment comment,Authentication authentication) {
+		User user = (User) authentication.getPrincipal();
+		Person person = personManager.findByAccount(user.getAccount());
+		if (!comment.getOwningPersonId().equals(person.getId())) {
+			return Collections.singletonMap("success", Boolean.FALSE.toString());
+		} else {
+			commentManager.update(comment);
+			return Collections.singletonMap("success", Boolean.TRUE.toString());
+		}
 	}
 
 }

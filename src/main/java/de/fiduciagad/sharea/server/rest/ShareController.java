@@ -65,7 +65,7 @@ public class ShareController {
 		Share share = shareManager.get(id);
 		Person person = personManager.findByAccount(user.getAccount());
 		if (!share.getOwningPersonId().equals(person.getId())) {
-			share.getParticipantIds().add(user.getAccount().getId());
+			share.getParticipantIds().add(person.getId());
 			shareManager.update(share);
 			return Collections.singletonMap("success", Boolean.TRUE.toString());
 		} else {

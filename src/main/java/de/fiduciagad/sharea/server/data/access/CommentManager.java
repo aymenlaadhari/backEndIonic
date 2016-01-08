@@ -1,5 +1,6 @@
 package de.fiduciagad.sharea.server.data.access;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +17,8 @@ public class CommentManager extends AbstractManager<Comment, CommentRepository> 
 		super(commentRepository);
 	}
 
-	public Comment create(String authorId, String text, String shareId) {
-		Comment comment = new Comment(authorId, text, shareId);
+	public Comment create(String authorId, String text, String shareId, String name, Date commentDate) {
+		Comment comment = new Comment(authorId, text, shareId, name, commentDate);
 		create(comment);
 		return comment;
 	}
@@ -25,5 +26,6 @@ public class CommentManager extends AbstractManager<Comment, CommentRepository> 
 	public List<Comment> findByShareId(String shareId) {
 		return getRepository().findByShares(shareId);
 	}
+	
 
 }
