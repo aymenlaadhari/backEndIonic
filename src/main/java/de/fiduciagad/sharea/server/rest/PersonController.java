@@ -28,13 +28,13 @@ public class PersonController {
 		return personManager.findByAccount(user.getAccount());
 	}
 
-	@RequestMapping(value = "/api/v1/person/{id}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/person/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Person getPerson(@PathVariable String id) {
 		return personManager.get(id);
 	}
 
-	@RequestMapping(value = "/api/v1/person/random", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = "/api/v1/person/random", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Person getPerson() {
 		List<Person> all = personManager.getAll();
