@@ -92,6 +92,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()//
 				.authorizeRequests()//
 				// .antMatchers("/api/v1/data").permitAll()//
+				.antMatchers("/api/v1/person/random").permitAll()//
 				.antMatchers("/api/v1/account").permitAll()//
 				.antMatchers("/api/v1/token").permitAll()//
 				// TODO1: Only allow read access to shares

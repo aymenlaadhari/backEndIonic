@@ -1,5 +1,8 @@
 package de.fiduciagad.sharea.server.rest;
 
+import java.util.List;
+import java.util.Random;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,6 +32,13 @@ public class PersonController {
 	@ResponseBody
 	public Person getPerson(@PathVariable String id) {
 		return personManager.get(id);
+	}
+
+	@RequestMapping(value = "/api/v1/person/random", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@ResponseBody
+	public Person getPerson() {
+		List<Person> all = personManager.getAll();
+		return all.get(new Random().nextInt(all.size()));
 	}
 
 }
