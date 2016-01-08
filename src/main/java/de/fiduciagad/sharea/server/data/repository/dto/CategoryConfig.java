@@ -1,10 +1,6 @@
 package de.fiduciagad.sharea.server.data.repository.dto;
 
-import org.ektorp.support.CouchDbDocument;
-
-public class CategoryConfig extends CouchDbDocument {
-
-	private static final long serialVersionUID = 1L;
+public class CategoryConfig {
 
 	private boolean showTitle;
 

@@ -14,7 +14,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import de.fiduciagad.sharea.server.data.access.CommentManager;
+import de.fiduciagad.sharea.server.data.access.PersonManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Comment;
+import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.rest.dto.FindComments;
 import de.fiduciagad.sharea.server.rest.dto.NewComment;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
@@ -25,6 +27,8 @@ public class CommentController {
 
 	@Autowired
 	private CommentManager commentManager;
+	@Autowired
+	private PersonManager personManager;
 
 	@Autowired
 	TokenEnabledUserDetailsService userDetailsService;
@@ -34,7 +38,8 @@ public class CommentController {
 	public Map<String, String> createComment(@RequestBody(required = true) NewComment newComment,
 			Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
-		Comment comment = commentManager.create(user.getAccount().getId(), newComment.getText(),
+		Person person = personManager.findByAccount(user.getAccount());
+		Comment comment = commentManager.create(person.getId(), newComment.getText(),
 				newComment.getShareId());
 		return Collections.singletonMap("id", comment.getId());
 	}

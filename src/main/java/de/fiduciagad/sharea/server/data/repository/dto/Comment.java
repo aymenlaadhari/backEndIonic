@@ -7,7 +7,7 @@ import org.ektorp.support.TypeDiscriminator;
 public class Comment extends CouchDbDocument {
 
 	private static final long serialVersionUID = 1L;
-	private String authorId;
+	private String owningPersonId;
 	private String text;
 	private String shareId;
 
@@ -15,15 +15,12 @@ public class Comment extends CouchDbDocument {
 	@TypeDiscriminator(value = "doc.docType === 'Comment'")
 	private final String docType = "Comment";
 
-	public Comment(String authorId, String text, String shareId) {
-		this.authorId = authorId;
+	public Comment(String owningPersonId, String text, String shareId) {
+		this.owningPersonId = owningPersonId;
 		this.text = text;
 		this.shareId = shareId;
 	}
 
-	public String getAuthorId() {
-		return authorId;
-	}
 
 	public String getDocType() {
 		return docType;
@@ -37,16 +34,22 @@ public class Comment extends CouchDbDocument {
 		return text;
 	}
 
-	public void setAuthorId(String authorId) {
-		this.authorId = authorId;
-	}
-
 	public void setShareId(String shareId) {
 		this.shareId = shareId;
 	}
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+
+	public String getOwningPersonId() {
+		return owningPersonId;
+	}
+
+
+	public void setOwningPersonId(String owningPersonId) {
+		this.owningPersonId = owningPersonId;
 	}
 
 }

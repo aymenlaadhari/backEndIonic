@@ -4,8 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,10 +13,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.fiduciagad.sharea.server.data.access.PersonManager;
 import de.fiduciagad.sharea.server.data.access.ShareManager;
+import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.data.repository.dto.Share;
 import de.fiduciagad.sharea.server.rest.dto.FindShares;
-import de.fiduciagad.sharea.server.rest.dto.NewShare;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 import de.fiduciagad.sharea.server.security.User;
 
@@ -27,18 +26,20 @@ public class ShareController {
 	
 	@Autowired
 	private ShareManager shareManager;
+	@Autowired
+	private PersonManager personManager;
 
 	@Autowired
 	TokenEnabledUserDetailsService userDetailsService;
 
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> createShare(@RequestBody NewShare newShare, Authentication authentication) {
+	public Map<String, String> createShare(@RequestBody Share share, Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
 		String owningPersonId = user.getAccount().getId();
-		Share share = shareManager.create(newShare.getTitle(), newShare.getDescription(), newShare.getCategoryId(),
-				newShare.getIcon(), newShare.getStartLocation(), newShare.getEndLocation(), newShare.getStartDate(),
-				newShare.getEndDate(), owningPersonId, newShare.getParticipantLimit());
+		share = shareManager.create(share.getTitle(), share.getDescription(), share.getCategoryId(),
+				share.getIcon(), share.getStartLocation(), share.getEndLocation(), share.getStartDate(),
+				share.getEndDate(), owningPersonId, share.getParticipantLimit());
 		return Collections.singletonMap("id", share.getId());
 	}
 
@@ -62,7 +63,8 @@ public class ShareController {
 		// Right now this just adds the user to the participant list.
 		User user = (User) authentication.getPrincipal();
 		Share share = shareManager.get(id);
-		if (!share.getOwningPersonId().equals(user.getAccount().getId())) {
+		Person person = personManager.findByAccount(user.getAccount());
+		if (!share.getOwningPersonId().equals(person.getId())) {
 			share.getParticipantIds().add(user.getAccount().getId());
 			shareManager.update(share);
 			return Collections.singletonMap("success", Boolean.TRUE.toString());
