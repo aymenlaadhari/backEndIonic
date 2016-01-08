@@ -10,6 +10,8 @@ public class Person extends CouchDbDocument {
 
 	private String name;
 
+	private String nickname;
+
 	private String owningAccountId;
 
 	@JsonProperty("docType")
@@ -39,6 +41,14 @@ public class Person extends CouchDbDocument {
 
 	public void setOwningAccountId(String owningAccountId) {
 		this.owningAccountId = owningAccountId;
+	}
+
+	public String getNickname() {
+		return this.nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 }

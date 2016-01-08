@@ -50,7 +50,8 @@ public class AccountController {
 
 		try {
 			String token = accountManager.create(newAccount.getEmail(), newAccount.getPassword(),
-					newAccount.getRealname(), newAccount.getDeviceName(), newAccount.getDeviceIdentifier());
+					newAccount.getRealname(), newAccount.getDeviceName(), newAccount.getDeviceIdentifier(),
+					newAccount.getNickname());
 
 			// TODO send mail
 			return Collections.singletonMap("auth-token", token);

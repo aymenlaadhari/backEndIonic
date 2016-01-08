@@ -21,9 +21,9 @@ public class Share extends CouchDbDocument {
 	private Date startDate;
 	private Date endDate;
 
-	private String owningPersonId;
+	private String owningPersonNickname;
 
-	private Set<String> participantIds;
+	private Set<String> participantNicknames;
 	private int participantLimit;
 
 	private String categoryId;
@@ -38,8 +38,8 @@ public class Share extends CouchDbDocument {
 	}
 
 	public Share(String title, String description, String categoryId, String icon, String startLocation,
-			String endLocation, Date startDate, Date endDate, String owningPersonId, Set<String> participantIds,
-			int participantLimit) {
+			String endLocation, Date startDate, Date endDate, String owningPersonNickname,
+			Set<String> participantNicknames, int participantLimit) {
 		super();
 		this.title = title;
 		this.description = description;
@@ -49,8 +49,8 @@ public class Share extends CouchDbDocument {
 		this.endLocation = endLocation;
 		this.startDate = startDate;
 		this.endDate = endDate;
-		this.owningPersonId = owningPersonId;
-		this.participantIds = participantIds;
+		this.setOwningPersonNickname(owningPersonNickname);
+		this.setParticipantNicknames(participantNicknames);
 		this.participantLimit = participantLimit;
 	}
 
@@ -72,14 +72,6 @@ public class Share extends CouchDbDocument {
 
 	public String getIcon() {
 		return icon;
-	}
-
-	public String getOwningPersonId() {
-		return owningPersonId;
-	}
-
-	public Set<String> getParticipantIds() {
-		return participantIds;
 	}
 
 	public int getParticipantLimit() {
@@ -118,16 +110,8 @@ public class Share extends CouchDbDocument {
 		this.icon = icon;
 	}
 
-	public void setOwningPersonId(String owningPersonId) {
-		this.owningPersonId = owningPersonId;
-	}
-
 	public void setParticipantLimit(int participantLimit) {
 		this.participantLimit = participantLimit;
-	}
-
-	public void setParticipants(Set<String> participantIds) {
-		this.participantIds = participantIds;
 	}
 
 	public void setStartDate(Date startDate) {
@@ -140,6 +124,22 @@ public class Share extends CouchDbDocument {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public Set<String> getParticipantNicknames() {
+		return this.participantNicknames;
+	}
+
+	public void setParticipantNicknames(Set<String> participantNicknames) {
+		this.participantNicknames = participantNicknames;
+	}
+
+	public String getOwningPersonNickname() {
+		return this.owningPersonNickname;
+	}
+
+	public void setOwningPersonNickname(String owningPersonNickname) {
+		this.owningPersonNickname = owningPersonNickname;
 	}
 
 }

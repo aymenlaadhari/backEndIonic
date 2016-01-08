@@ -19,6 +19,9 @@ public class NewAccount {
 	@NotNull
 	private String deviceIdentifier;
 
+	@NotNull
+	private String nickname;
+
 	public NewAccount() {
 	}
 
@@ -60,6 +63,14 @@ public class NewAccount {
 
 	public void setRealname(String realname) {
 		this.realname = realname;
+	}
+
+	public String getNickname() {
+		return this.nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
 	}
 
 }

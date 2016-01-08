@@ -85,26 +85,27 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 		}
 	}
 
-	private Account create(String email, String password, String realname, AccessToken token) {
+	private Account create(String email, String password, String realname, AccessToken token, String nickname) {
 		if (getRepository().findByEmail(email) != null) {
 			throw new DuplicateKeyException("User already exists.");
 		}
 		Account account = new Account(email, passwordEncoder.encode(password));
 		Person person = new Person(realname);
+		person.setNickname(nickname);
 		account.getPersons().add(person);
 		account.getAccessTokens().add(token);
 		create(account);
 		return account;
 	}
 
-	public String create(String email, String password, String realname, String deviceName, String deviceIdentifier)
-			throws GeneralSecurityException {
+	public String create(String email, String password, String realname, String deviceName, String deviceIdentifier,
+			String nickname) throws GeneralSecurityException {
 		AccessToken token = AccessToken.createRandom(deviceName, deviceIdentifier);
-		create(email, password, realname, token);
+		create(email, password, realname, token, nickname);
 		return token.getTokenText();
 	}
 
-	public void createDeveloperAccount(String name, String username, String tokenText) {
+	public void createDeveloperAccount(String name, String username, String tokenText, String nickname) {
 		if (!environment.acceptsProfiles("dev")) {
 			logger.error("Method createDeveloperAccount() should only be called in dev environments! No Data changed.");
 			return;
@@ -119,7 +120,7 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 			String deviceName = "Developer Device";
 			AccessToken token = AccessToken.createRandom(deviceName, deviceName);
 			token.setTokenText(tokenText);
-			create(username, password, name, token);
+			create(username, password, name, token, nickname);
 		} catch (GeneralSecurityException e) {
 			logger.error("Could not create developer account for: " + username);
 		}

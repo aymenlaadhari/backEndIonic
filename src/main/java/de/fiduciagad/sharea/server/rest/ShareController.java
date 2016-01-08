@@ -23,7 +23,7 @@ import de.fiduciagad.sharea.server.security.User;
 
 @RestController
 public class ShareController {
-	
+
 	@Autowired
 	private ShareManager shareManager;
 	@Autowired
@@ -37,9 +37,9 @@ public class ShareController {
 	public Map<String, String> createShare(@RequestBody Share share, Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
 		String owningPersonId = user.getAccount().getId();
-		share = shareManager.create(share.getTitle(), share.getDescription(), share.getCategoryId(),
-				share.getIcon(), share.getStartLocation(), share.getEndLocation(), share.getStartDate(),
-				share.getEndDate(), owningPersonId, share.getParticipantLimit());
+		share = shareManager.create(share.getTitle(), share.getDescription(), share.getCategoryId(), share.getIcon(),
+				share.getStartLocation(), share.getEndLocation(), share.getStartDate(), share.getEndDate(),
+				owningPersonId, share.getParticipantLimit());
 		return Collections.singletonMap("id", share.getId());
 	}
 
@@ -55,7 +55,7 @@ public class ShareController {
 		return shareManager.get(id);
 	}
 
-	@RequestMapping(value = "/api/v1/share/{id}", method = RequestMethod.PUT, produces = "application/json")
+	@RequestMapping(value = "/api/v1/share/{nickname}", method = RequestMethod.PUT, produces = "application/json")
 	@ResponseBody
 	public Map<String, String> update(@PathVariable String id, Authentication authentication) {
 		// TODO: The owner should be able do update the Share, all others should
@@ -64,8 +64,8 @@ public class ShareController {
 		User user = (User) authentication.getPrincipal();
 		Share share = shareManager.get(id);
 		Person person = personManager.findByAccount(user.getAccount());
-		if (!share.getOwningPersonId().equals(person.getId())) {
-			share.getParticipantIds().add(person.getId());
+		if (!share.getOwningPersonNickname().equals(person.getNickname())) {
+			share.getParticipantNicknames().add(person.getNickname());
 			shareManager.update(share);
 			return Collections.singletonMap("success", Boolean.TRUE.toString());
 		} else {
