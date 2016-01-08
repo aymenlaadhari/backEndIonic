@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -25,7 +24,6 @@ public class EventController {
 	@Autowired
 	private EventManager eventManager;
 
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/event", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, String> createEvent(@RequestParam(required = true) String name,
@@ -38,7 +36,6 @@ public class EventController {
 		return Collections.singletonMap("success", Boolean.TRUE.toString());
 	}
 
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/event", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public List<Event> findEvents(@RequestParam(required = true) String location,
@@ -46,7 +43,6 @@ public class EventController {
 		return eventManager.findByStartLocation(location, limit);
 	}
 
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/event/{id}", method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Event getEvent(@PathVariable String id) {

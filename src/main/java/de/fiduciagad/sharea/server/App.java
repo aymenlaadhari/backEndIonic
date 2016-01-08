@@ -1,7 +1,5 @@
 package de.fiduciagad.sharea.server;
 
-import javax.servlet.Filter;
-
 import org.ektorp.CouchDbConnector;
 import org.ektorp.CouchDbInstance;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +28,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import springfox.documentation.swagger1.annotations.EnableSwagger;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
-import de.fiduciagad.sharea.server.security.CorsFilter;
 import de.fiduciagad.sharea.server.security.TokenAuthenticationFilter;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 
@@ -101,7 +98,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/api/v1/share/*").permitAll()//
 				.antMatchers("/logout").permitAll()//
 				// allow all cors-preflight options requests
-				.antMatchers(HttpMethod.OPTIONS, "/api/v1/findShares").permitAll()
+				.antMatchers(HttpMethod.OPTIONS, "/api/**").permitAll()
 				// springfox documentation :-)))
 				.antMatchers("/api-docs/**").permitAll()//
 				.antMatchers("/configuration/security").permitAll()//
@@ -131,16 +128,32 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 		return new WebMvcConfigurerAdapter() {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
-				registry.addMapping("/*").allowedOrigins("http://localhost:8100",
-						"http://sharedotadotdev.eu-gb.mybluemix.net",
-						"https://sharedotadotdev.eu-gb.mybluemix.net");
+				registry
+					.addMapping("/api/**")
+						.allowedOrigins(
+								"http://localhost:8100",
+								"http://sharedotadotdev.eu-gb.mybluemix.net",
+								"https://sharedotadotdev.eu-gb.mybluemix.net")
+						.allowedHeaders(
+								"Content-Type", 
+								"Accept", 
+								"X-Requested-With", 
+								"remember-me",
+								"x-auth-token", 
+								"cache-control", 
+								"user-agent")
+						.exposedHeaders(
+								"Content-Type", 
+								"Accept", 
+								"X-Requested-With", 
+								"remember-me",
+								"x-auth-token", 
+								"cache-control", 
+								"user-agent")
+						.allowedMethods("POST", "GET", "OPTIONS")
+						.allowCredentials(true)
+						.maxAge(3600);
 			}
 		};
 	}
-
-	@Bean
-	public Filter corsFilter() {
-		return new CorsFilter();
-	}
-
 }

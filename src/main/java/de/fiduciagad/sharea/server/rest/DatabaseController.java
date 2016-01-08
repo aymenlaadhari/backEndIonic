@@ -7,7 +7,6 @@ import org.ektorp.CouchDbInstance;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,7 +62,6 @@ public class DatabaseController {
 	 *
 	 * @return
 	 */
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/data", method = RequestMethod.DELETE, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, Boolean> purge() {

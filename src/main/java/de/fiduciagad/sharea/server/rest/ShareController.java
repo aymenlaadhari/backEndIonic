@@ -4,11 +4,10 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,14 +24,13 @@ import de.fiduciagad.sharea.server.security.User;
 
 @RestController
 public class ShareController {
-
+	
 	@Autowired
 	private ShareManager shareManager;
 
 	@Autowired
 	TokenEnabledUserDetailsService userDetailsService;
 
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, String> createShare(@RequestBody NewShare newShare, Authentication authentication) {
@@ -44,21 +42,18 @@ public class ShareController {
 		return Collections.singletonMap("id", share.getId());
 	}
 
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/findShares", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public List<Share> findShares(@RequestBody FindShares findShares) {
 		return shareManager.findByStartLocation(findShares.getStartLocation(), findShares.getLimit());
 	}
 
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Share getShare(@PathVariable String id) {
 		return shareManager.get(id);
 	}
 
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share/{id}", method = RequestMethod.PUT, produces = "application/json")
 	@ResponseBody
 	public Map<String, String> update(@PathVariable String id, Authentication authentication) {
@@ -76,7 +71,6 @@ public class ShareController {
 		}
 	}
 
-	@CrossOrigin
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, String> updateShare(@RequestBody Share share) {
