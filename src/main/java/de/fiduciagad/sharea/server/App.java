@@ -27,6 +27,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import de.fiduciagad.sharea.server.rest.PersonController;
+import de.fiduciagad.sharea.server.rest.TokenController;
 import de.fiduciagad.sharea.server.security.TokenAuthenticationFilter;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 import springfox.documentation.swagger1.annotations.EnableSwagger;
@@ -94,6 +95,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()//
 				// .antMatchers("/api/v1/data").permitAll()//
 				.antMatchers(PersonController.API_PERSON_RANDOM).permitAll()//
+				.antMatchers(TokenController.API_TOKEN_RANDOM).permitAll()//
 				.antMatchers("/api/v1/account").permitAll()//
 				.antMatchers("/api/v1/token").permitAll()//
 				// TODO1: Only allow read access to shares

@@ -41,7 +41,7 @@ public class PersonController {
 	@RequestMapping(value = API_PERSON_RANDOM, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Person getPerson() {
-		// TODO improve!!!
+		// TODO XXX remove!!!
 		List<Person> all = personManager.getAll();
 		return all.get(new Random().nextInt(all.size()));
 	}

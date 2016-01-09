@@ -1,7 +1,9 @@
 package de.fiduciagad.sharea.server.rest;
 
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -12,16 +14,24 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import de.fiduciagad.sharea.server.data.access.AccessTokenManager;
 import de.fiduciagad.sharea.server.data.access.AccountManager;
 import de.fiduciagad.sharea.server.data.exceptions.ModificationException;
+import de.fiduciagad.sharea.server.data.repository.dto.AccessToken;
 import de.fiduciagad.sharea.server.data.repository.dto.Account;
+import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.rest.dto.NewToken;
 
 @RestController
 public class TokenController {
 
+	public static final String API_TOKEN_RANDOM = "/api/v1/token/random";
+
 	@Autowired
 	private AccountManager accountManager;
+
+	@Autowired
+	private AccessTokenManager accessTokenManager;
 
 	@Autowired
 	private PasswordEncoder passwordEncoder;
@@ -48,4 +58,11 @@ public class TokenController {
 		throw new BadCredentialsException("Could not authenticate user.");
 	}
 
+	@RequestMapping(value = API_TOKEN_RANDOM, method = RequestMethod.POST, consumes = "application/json")
+	@ResponseBody
+	public String getRandomToken(@RequestBody Person person) {
+		// TODO XXX remove!!!
+		List<AccessToken> all = accessTokenManager.findByOwningAccount(accountManager.get(person.getOwningAccountId()));
+		return all.get(new Random().nextInt(all.size())).getTokenText();
+	}
 }
