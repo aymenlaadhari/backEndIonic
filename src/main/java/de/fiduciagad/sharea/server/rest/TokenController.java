@@ -58,11 +58,11 @@ public class TokenController {
 		throw new BadCredentialsException("Could not authenticate user.");
 	}
 
-	@RequestMapping(value = API_TOKEN_RANDOM, method = RequestMethod.POST, consumes = "application/json")
+	@RequestMapping(value = API_TOKEN_RANDOM, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public String getRandomToken(@RequestBody Person person) {
+	public Map<String, String> getRandomToken(@RequestBody Person person) {
 		// TODO XXX remove!!!
 		List<AccessToken> all = accessTokenManager.findByOwningAccount(accountManager.get(person.getOwningAccountId()));
-		return all.get(new Random().nextInt(all.size())).getTokenText();
+		return Collections.singletonMap("auth-token", all.get(new Random().nextInt(all.size())).getTokenText());
 	}
 }
