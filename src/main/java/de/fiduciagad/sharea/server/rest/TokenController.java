@@ -60,9 +60,9 @@ public class TokenController {
 
 	@RequestMapping(value = API_TOKEN_RANDOM, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> getRandomToken(@RequestBody Person person) {
+	public String getRandomToken(@RequestBody Person person) {
 		// TODO XXX remove!!!
 		List<AccessToken> all = accessTokenManager.findByOwningAccount(accountManager.get(person.getOwningAccountId()));
-		return Collections.singletonMap("auth-token", all.get(new Random().nextInt(all.size())).getTokenText());
+		return all.get(new Random().nextInt(all.size())).getTokenText();
 	}
 }
