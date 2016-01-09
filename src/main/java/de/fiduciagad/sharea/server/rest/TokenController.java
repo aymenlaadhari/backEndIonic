@@ -58,8 +58,7 @@ public class TokenController {
 		throw new BadCredentialsException("Could not authenticate user.");
 	}
 
-	@RequestMapping(value = API_TOKEN_RANDOM, method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
-	@ResponseBody
+	@RequestMapping(value = API_TOKEN_RANDOM, method = RequestMethod.POST, consumes = "application/json")
 	public String getRandomToken(@RequestBody Person person) {
 		// TODO XXX remove!!!
 		List<AccessToken> all = accessTokenManager.findByOwningAccount(accountManager.get(person.getOwningAccountId()));
