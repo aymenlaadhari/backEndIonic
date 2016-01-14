@@ -47,6 +47,9 @@ public class Shares {
 	}
 
 	private void createShares(List<String> personIds, Map<String, String> categoryMapping, Date startDate) {
+		
+		logger.info("CreateShares has been entered");
+		
 		this.personIds = personIds;
 		this.categoryMapping = categoryMapping;
 		Preconditions.checkArgument(personIds != null && personIds.size() >= 6,
@@ -54,6 +57,8 @@ public class Shares {
 		Preconditions.checkArgument(categoryMapping != null && categoryMapping.size() >= 3,
 				"Need at least three categories.");
 
+		logger.info("Preconditions are met");
+		
 		List<Share> shares = Lists.newArrayList(
 				//
 				createShare("travel-together", "HBF Karlsruhe zu Standort Karlsruhe", "", "ion-md-car",
@@ -65,6 +70,9 @@ public class Shares {
 				createShare("eat-together", "Kaffee trinken", "", "ion-md-cafe", "Berlin", "", startDate), //
 				createShare("share-office", "Büro Frankfurt", "", "ion-ios-monitor", "Frankfurt", "", startDate) //
 				);
+		
+		logger.info("List of shares created");
+		
 		for (Share share : shares) {
 			logger.info("Add example share: " + share.getTitle());
 			shareRepository.add(share);
