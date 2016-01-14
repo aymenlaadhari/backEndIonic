@@ -40,9 +40,9 @@ public class DemoDataInitialization {
 			Map<String, String> categoryMapping = categories.init();
 			log.info("init shares");
 			shares.init(personIds, categoryMapping);
-		} catch (Exception e) {
-			log.error("init error:", e);
-			throw new IllegalStateException(e);
+		} catch (Throwable t) {
+			log.error("init error:", t);
+			throw new IllegalStateException(t);
 		}
 	}
 
