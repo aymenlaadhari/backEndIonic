@@ -42,8 +42,8 @@ public class Shares {
 		String owner = getOwner();
 		Set<String> participants = getParticipants(owner);
 		return new Share(title, description, getIdForCategory(internalCategoryName), icon, startLocation, endLocation,
-				startDate, DateUtils.addHours(startDate, 1), owner, participants,
-				participants.size() + new Random().nextInt(10));
+				startDate, DateUtils.addHours(startDate, 1), owner, participants, participants.size()
+						+ new Random().nextInt(10));
 	}
 
 	private void createShares(List<String> personIds, Map<String, String> categoryMapping, Date startDate) {
@@ -54,16 +54,17 @@ public class Shares {
 		Preconditions.checkArgument(categoryMapping != null && categoryMapping.size() >= 3,
 				"Need at least three categories.");
 
-		List<Share> shares = Lists.newArrayList(//
-				createShare("travel-together", "HBF Karlsruhe zu Standort Karlsruhe", "", "ion-md-car", "HBF Karlsruhe",
-						"Standort Karlsruhe", startDate), //
+		List<Share> shares = Lists.newArrayList(
+				//
+				createShare("travel-together", "HBF Karlsruhe zu Standort Karlsruhe", "", "ion-md-car",
+						"HBF Karlsruhe", "Standort Karlsruhe", startDate), //
 				createShare("travel-together", "HBF Münster zu Standort Münster", "", "ion-md-car", "HBF Münster",
 						"Standort Münster", startDate), //
 				createShare("eat-together", "Betriebsrestaurant München", "", "ion-md-restaurant", "München", "",
 						startDate), //
 				createShare("eat-together", "Kaffee trinken", "", "ion-md-cafe", "Berlin", "", startDate), //
 				createShare("share-office", "Büro Frankfurt", "", "ion-ios-monitor", "Frankfurt", "", startDate) //
-		);
+				);
 		for (Share share : shares) {
 			logger.info("Add example share: " + share.getTitle());
 			shareRepository.add(share);
@@ -107,9 +108,10 @@ public class Shares {
 				DateUtils.addMonths(currentDate, 2), //
 				DateUtils.addMonths(currentDate, 4), //
 				DateUtils.addMonths(currentDate, 6)//
-		);
+				);
 
 		for (Date date : dates) {
+			logger.info("createShares: " + date);
 			createShares(personIds, categoryMapping, date);
 		}
 	}
