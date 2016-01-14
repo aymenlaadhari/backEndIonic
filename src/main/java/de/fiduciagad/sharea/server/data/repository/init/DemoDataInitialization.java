@@ -38,7 +38,10 @@ public class DemoDataInitialization {
 			developerAccounts.init();
 			List<String> personIds = persons.init();
 			Map<String, String> categoryMapping = categories.init();
-			log.info("init shares");
+			log.info("init shares, personIds: ");
+			personIds.forEach((s) -> log.info(s));
+			log.info("categories mapping: ");
+			categoryMapping.forEach((s,t) -> log.info("categorie: "+ s + " " + t));
 			shares.init(personIds, categoryMapping);
 		} catch (Throwable t) {
 			log.error("init error:", t);

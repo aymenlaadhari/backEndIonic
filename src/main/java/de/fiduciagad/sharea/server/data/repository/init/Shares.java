@@ -61,12 +61,9 @@ public class Shares {
 		
 		List<Share> shares = Lists.newArrayList(
 				//
-				createShare("travel-together", "HBF Karlsruhe zu Standort Karlsruhe", "", "ion-md-car",
-						"HBF Karlsruhe", "Standort Karlsruhe", startDate), //
-				createShare("travel-together", "HBF Münster zu Standort Münster", "", "ion-md-car", "HBF Münster",
-						"Standort Münster", startDate), //
-				createShare("eat-together", "Betriebsrestaurant München", "", "ion-md-restaurant", "München", "",
-						startDate), //
+				createShare("travel-together", "HBF Karlsruhe zu Standort Karlsruhe", "", "ion-md-car",	"HBF Karlsruhe", "Standort Karlsruhe", startDate), //
+				createShare("travel-together", "HBF Münster zu Standort Münster", "", "ion-md-car", "HBF Münster", "Standort Münster", startDate), //
+				createShare("eat-together", "Betriebsrestaurant München", "", "ion-md-restaurant", "München", "", startDate), //
 				createShare("eat-together", "Kaffee trinken", "", "ion-md-cafe", "Berlin", "", startDate), //
 				createShare("share-office", "Büro Frankfurt", "", "ion-ios-monitor", "Frankfurt", "", startDate) //
 				);
