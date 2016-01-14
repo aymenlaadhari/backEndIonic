@@ -112,7 +112,12 @@ public class Shares {
 
 		for (Date date : dates) {
 			logger.info("createShares: " + date);
-			createShares(personIds, categoryMapping, date);
+			try{
+				createShares(personIds, categoryMapping, date);
+			
+			} catch (Throwable t){
+				t.printStackTrace();
+			}
 		}
 	}
 
