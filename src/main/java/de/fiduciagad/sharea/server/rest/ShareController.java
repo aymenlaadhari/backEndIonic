@@ -75,9 +75,15 @@ public class ShareController {
 
 	@RequestMapping(value = "/api/v1/share", method = RequestMethod.PUT, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> updateShare(@RequestBody Share share) {
-		shareManager.update(share);
-		return Collections.singletonMap("id", share.getId());
+	public Map<String, String> update(@RequestBody(required = true) Share share, Authentication authentication) {
+		User user = (User) authentication.getPrincipal();
+		Person person = personManager.findByAccount(user.getAccount());
+		if (!share.getOwningPersonNickname().equals(person.getNickname())) {
+			return Collections.singletonMap("success", Boolean.FALSE.toString());
+		} else {
+			shareManager.update(share);
+			return Collections.singletonMap("success", Boolean.TRUE.toString());
+		}
 	}
 
 }
