@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 public class DemoDataInitialization {
 
 	private final Logger log = LoggerFactory.getLogger(this.getClass());
-	
+
 	@Autowired
 	private Categories categories;
 
@@ -34,11 +34,16 @@ public class DemoDataInitialization {
 
 	@PostConstruct
 	public void init() {
-		developerAccounts.init();
-		List<String> personIds = persons.init();
-		Map<String, String> categoryMapping = categories.init();
-		log.info("init shares");
-		shares.init(personIds, categoryMapping);
+		try {
+			developerAccounts.init();
+			List<String> personIds = persons.init();
+			Map<String, String> categoryMapping = categories.init();
+			log.info("init shares");
+			shares.init(personIds, categoryMapping);
+		} catch (Exception e) {
+			log.error("init error:", e);
+			throw new IllegalStateException(e);
+		}
 	}
 
 }
