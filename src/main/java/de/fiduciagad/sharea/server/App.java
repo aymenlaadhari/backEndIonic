@@ -112,7 +112,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/swagger-ui.html").permitAll()//
 				.antMatchers("/webjars/springfox-swagger-ui/**").permitAll()//
 				.antMatchers("/images/**").permitAll()//
-				.anyRequest().authenticated()..and()//
+				.anyRequest().authenticated().and()//
 				.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 	}
