@@ -112,7 +112,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.antMatchers("/swagger-ui.html").permitAll()//
 				.antMatchers("/webjars/springfox-swagger-ui/**").permitAll()//
 				.antMatchers("/images/**").permitAll()//
-				.anyRequest().authenticated().and()//
+				.anyRequest().authenticated()..and()//
 				.addFilterBefore(tokenAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
 
 	}
@@ -133,7 +133,9 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 			@Override
 			public void addCorsMappings(CorsRegistry registry) {
 				registry.addMapping("/api/**")
-						.allowedOrigins("http://localhost:8100", "http://sharedotadotdev.eu-gb.mybluemix.net",
+						.allowedOrigins("http://localhost:8100", 
+								"https://sharedota.eu-gb.mybluemix.net", //Produktivsystem
+								//"http://sharedotadotdev.eu-gb.mybluemix.net", //Unsicher
 								"https://sharedotadotdev.eu-gb.mybluemix.net")
 						.allowedHeaders("Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token",
 								"cache-control", "user-agent")
