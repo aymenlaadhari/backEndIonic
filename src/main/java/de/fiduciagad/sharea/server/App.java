@@ -135,7 +135,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				registry.addMapping("/api/**")
 						.allowedOrigins("http://localhost:8100", 
 								"https://sharedota.eu-gb.mybluemix.net", //Produktivsystem
-								//"http://sharedotadotdev.eu-gb.mybluemix.net", //Unsicher
+								"http://sharedotadotdev.eu-gb.mybluemix.net", //Unsicher
 								"https://sharedotadotdev.eu-gb.mybluemix.net")
 						.allowedHeaders("Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token",
 								"cache-control", "user-agent")
