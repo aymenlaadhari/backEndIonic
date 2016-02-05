@@ -95,6 +95,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				.authorizeRequests()//
 				// .antMatchers("/api/v1/data").permitAll()//
 				.antMatchers(PersonController.API_PERSON_RANDOM).permitAll()//
+				.antMatchers(PersonController.API_PERSON).permitAll()//
 				.antMatchers(TokenController.API_TOKEN_RANDOM).permitAll()//
 				.antMatchers("/api/v1/account").permitAll()//
 				.antMatchers("/api/v1/token").permitAll()//
@@ -135,7 +136,7 @@ class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 				registry.addMapping("/api/**")
 						.allowedOrigins("http://localhost:8100", 
 								"https://sharedota.eu-gb.mybluemix.net", //Produktivsystem
-								"http://sharedotadotdev.eu-gb.mybluemix.net", //Unsicher
+								//"http://sharedotadotdev.eu-gb.mybluemix.net", //Unsicher
 								"https://sharedotadotdev.eu-gb.mybluemix.net")
 						.allowedHeaders("Content-Type", "Accept", "X-Requested-With", "remember-me", "x-auth-token",
 								"cache-control", "user-agent")
