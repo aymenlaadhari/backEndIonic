@@ -89,7 +89,7 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 		if (getRepository().findByEmail(email) != null) {
 			throw new DuplicateKeyException("User already exists.");
 		}
-		Account account = new Account(email, passwordEncoder.encode(password));
+		Account account = new Account(email, password);
 		Person person = new Person(realname);
 		person.setNickname(nickname);
 		account.getPersons().add(person);

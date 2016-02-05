@@ -47,8 +47,7 @@ public class TokenController {
 	 */
 	@RequestMapping(value = "/api/v1/token", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> createToken(@RequestBody NewToken newToken) throws ModificationException {
-
+	public Map<String, String> createToken(@RequestBody(required = true) NewToken newToken) throws ModificationException {
 		Account account = accountManager.getAccountByEmail(newToken.getEmail(), true);
 		if(null == account) {
 			throw new BadCredentialsException("No such account.");
