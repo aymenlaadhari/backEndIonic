@@ -50,7 +50,10 @@ public class TokenController {
 	public Map<String, String> createToken(@RequestBody NewToken newToken) throws ModificationException {
 
 		Account account = accountManager.getAccountByEmail(newToken.getEmail(), true);
-		if (account != null && passwordEncoder.matches(newToken.getPassword(), account.getPassword())) {
+		if(null == account) {
+			throw new BadCredentialsException("No such account.");
+		}
+		if (passwordEncoder.matches(newToken.getPassword(), account.getPassword())) {
 			String tokenText = accountManager.addToken(account, newToken.getDeviceName(),
 					newToken.getDeviceIdentifier());
 			return Collections.singletonMap("auth-token", tokenText);
