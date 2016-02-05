@@ -7,6 +7,7 @@ import java.util.Map;
 import org.apache.commons.validator.routines.EmailValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
+import org.springframework.mail.MailSender;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -21,6 +22,9 @@ public class AccountController {
 
 	@Autowired
 	private AccountManager accountManager;
+	
+	@Autowired
+	private MailSender mailSender;
 
 	/**
 	 * Create a new account
@@ -52,8 +56,27 @@ public class AccountController {
 			String token = accountManager.create(newAccount.getEmail(), newAccount.getPassword(),
 					newAccount.getRealname(), newAccount.getDeviceName(), newAccount.getDeviceIdentifier(),
 					newAccount.getNickname());
-
+			
 			// TODO send mail
+			/*
+			SimpleMailMessage msg = new SimpleMailMessage();
+	        msg.setTo("dbetsche@gmail.com");//newAccount.getEmail());
+	        msg.setFrom("share.a@fiduciagad.de");
+	        msg.setSubject("Ihre Registrierung bei Share.A");
+	        msg.setSentDate(new Date());
+	        msg.setText(
+	            "Hallo " + newAccount.getRealname()
+	                + ", Sie haben sich erfolgreich bei Share.A registriert.\n"
+	                + "Sie können sich nun jederzeit mit ihrer Mail\n"
+	                + newAccount.getEmail() + " anmelden.");
+	        try{
+	            this.mailSender.send(msg);
+	        } catch (MailException ex) {
+	            //System.err.println(ex.getMessage());
+	        	//TODO handle mail exception
+	        }
+	        */
+
 			return Collections.singletonMap("auth-token", token);
 		} catch (GeneralSecurityException e) {
 			throw new IllegalStateException("Cannot create token for user. ", e);
