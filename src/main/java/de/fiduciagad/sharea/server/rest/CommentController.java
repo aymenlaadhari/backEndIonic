@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import org.ektorp.UpdateConflictException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,6 +18,7 @@ import de.fiduciagad.sharea.server.data.access.PersonManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Comment;
 import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.rest.dto.FindComments;
+import de.fiduciagad.sharea.server.rest.dto.NewComment;
 import de.fiduciagad.sharea.server.security.TokenEnabledUserDetailsService;
 import de.fiduciagad.sharea.server.security.User;
 
@@ -35,12 +35,11 @@ public class CommentController {
 
 	@RequestMapping(value = "/api/v1/comment", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Map<String, String> createComment(@RequestBody(required = true) Comment comment,
+	public Map<String, String> createComment(@RequestBody(required = true) NewComment newComment,
 			Authentication authentication) {
-		User user = (User) authentication.getPrincipal();
-		Person person = personManager.findByAccount(user.getAccount());
-		comment = commentManager.create(person.getId(), comment.getText(),
-				comment.getShareId(), comment.getName(), comment.getCommentDate());
+		Person person = personManager.get(newComment.getOwningPersonId());
+		Comment comment = commentManager.create(person.getId(), newComment.getText(),
+				newComment.getShareId(), person.getName(), newComment.getCommentDate());
 		return Collections.singletonMap("id", comment.getId());
 	}
 

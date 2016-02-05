@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,20 +28,21 @@ public class PersonController {
 
 	@RequestMapping(value = API_PERSON, method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
 	@ResponseBody
-	public Person getPerson(Authentication authentication) {
+	public Person getAuthenticatedPerson(Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
 		return personManager.findByAccount(user.getAccount());
 	}
 
 	@RequestMapping(value = API_PERSON + "/{id}", method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public Person getPerson(@PathVariable String id) {
+	public Person getPersonById(@PathVariable String id) {
 		return personManager.get(id);
 	}
 
+	@ConditionalOnProperty(prefix = "spring.profiles", name = "active", havingValue = "dev")
 	@RequestMapping(value = API_PERSON_RANDOM, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public Person getPerson() {
+	public Person getRandomPerson() {
 		// TODO XXX remove!!!
 		List<Person> all = personManager.getAll();
 		return all.get(new Random().nextInt(all.size()));
