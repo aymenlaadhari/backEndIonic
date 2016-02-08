@@ -1,0 +1,40 @@
+{
+	"$schema": "http://json-schema.org/draft-04/schema#", 
+	"id": "http://jsonschema.net", 
+	"type": "object", 
+	"properties": {
+		"id": {
+			"id": "http://jsonschema.net/id", 
+			"type": "string"
+		}, 
+
+		"revision": {
+			"id": "http://jsonschema.net/revision", 
+			"type": "string"
+		}, 
+
+		"name": {
+			"id": "http://jsonschema.net/name", 
+			"type": "string"
+		}, 
+
+		"nickname": {
+			"id": "http://jsonschema.net/nickname", 
+			"type": "string"
+		}, 
+
+		"owningAccountId": {
+			"id": "http://jsonschema.net/owningAccountId", 
+			"type": "string"
+		}
+	}, 
+
+	"additionalProperties": false, 
+	"required": [
+		"id", 
+		"revision", 
+		"name", 
+		"nickname", 
+		"owningAccountId"
+	]
+}

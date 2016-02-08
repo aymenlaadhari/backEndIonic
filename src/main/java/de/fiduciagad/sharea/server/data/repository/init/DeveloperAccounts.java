@@ -21,8 +21,9 @@ public class DeveloperAccounts {
 		accountManager.createDeveloperAccount("Matthias Weber", "matthias.weber@fiduciagad.de", "310b7ea07cca378da89d1dcd85b6710934f554a2206a4551","Matze");
 		accountManager.createDeveloperAccount("Maximilian Geißel", "maximilian.geissel@fiduciagad.de", "a5078697e93d07ef0f95f482ee13876256f557ff7af57697","Max");
 		accountManager.createDeveloperAccount("Rudolf Mottinger", "rudolf.mottinger@fiduciagad.de", "7a9b6d34d4e6830015a7dd1f302fe29fec9c06a8e6ec5b6e","Rudi");
-		accountManager.createDeveloperAccount("Daniel Betsche", "daniel.betsche@fiduciagad.de", "d273a9c52d546c6d48b52d5d87c02ab989bc2d6579a8e229","Daniel");
-		accountManager.createDeveloperAccount("Aymen Laadhari", "aymen.laadhari@fiduciagad.de", "d123a9c52d546c6d48c52d5d87d76ab989bc2d6579a8e229","Aymen");
+		accountManager.createDeveloperAccount("Daniel Betsche", "daniel.betsche@fiduciagad.de", "af58533c4911aa9a0db1185d34be355af82821ec3b1a5ae4","Daniel");
+		accountManager.createDeveloperAccount("Aymen Laadhari", "aymen.laadhari@fiduciagad.de", "d273a9c52d546c6d48b52d5d87c02ab989bc2d6579a8e229","Aymen");
+		accountManager.createDeveloperAccount("Testus Juser", "none@example.com", "f0bf325a642c300614f31a72084c5ef11609a1ae0a0fba52","testuser");
 		//@formatter:on
 	}
 

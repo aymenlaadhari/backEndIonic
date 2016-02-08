@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import de.fiduciagad.sharea.server.data.access.PersonManager;
 import de.fiduciagad.sharea.server.data.repository.dto.Person;
+import de.fiduciagad.sharea.server.rest.dto.APIPerson;
 import de.fiduciagad.sharea.server.security.User;
 
 @RestController
@@ -21,31 +22,33 @@ public class PersonController {
 
 	public static final String API_PERSON = "/api/" + AbstractController.API_VERSION + "/person";
 
-	public static final String API_PERSON_RANDOM = "/api/" + AbstractController.API_VERSION + "/person/random";
+	public static final String API_PERSON_BY_ID = API_PERSON + "/{id}";
+
+	public static final String API_PERSON_RANDOM = API_PERSON + "/random";
 
 	@Autowired
 	private PersonManager personManager;
 
 	@RequestMapping(value = API_PERSON, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public Person getAuthenticatedPerson(Authentication authentication) {
+	public APIPerson getAuthenticatedPerson(Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
-		return personManager.findByAccount(user.getAccount());
+		return APIPerson.from(personManager.findByAccount(user.getAccount()));
 	}
 
-	@RequestMapping(value = API_PERSON + "/{id}", method = RequestMethod.GET, produces = "application/json")
+	@RequestMapping(value = API_PERSON_BY_ID, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public Person getPersonById(@PathVariable String id) {
-		return personManager.get(id);
+	public APIPerson getPersonById(@PathVariable String id) {
+		return APIPerson.from(personManager.get(id));
 	}
 
 	@ConditionalOnProperty(prefix = "spring.profiles", name = "active", havingValue = "dev")
 	@RequestMapping(value = API_PERSON_RANDOM, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
-	public Person getRandomPerson() {
+	public APIPerson getRandomPerson() {
 		// TODO XXX remove!!!
 		List<Person> all = personManager.getAll();
-		return all.get(new Random().nextInt(all.size()));
+		return APIPerson.from(all.get(new Random().nextInt(all.size())));
 	}
 
 }
