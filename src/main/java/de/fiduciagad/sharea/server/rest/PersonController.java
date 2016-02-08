@@ -26,7 +26,7 @@ public class PersonController {
 	@Autowired
 	private PersonManager personManager;
 
-	@RequestMapping(value = API_PERSON, method = RequestMethod.GET, produces = "application/json", consumes = "application/json")
+	@RequestMapping(value = API_PERSON, method = RequestMethod.GET, produces = "application/json")
 	@ResponseBody
 	public Person getAuthenticatedPerson(Authentication authentication) {
 		User user = (User) authentication.getPrincipal();
