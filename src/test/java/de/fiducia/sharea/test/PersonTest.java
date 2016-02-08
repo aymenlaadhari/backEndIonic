@@ -24,10 +24,10 @@ import de.fiduciagad.sharea.server.data.repository.PersonRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.rest.PersonController;
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@IntegrationTest({ "server.port:9090", "management.port:9091", "spring.profiles.active=dev" })
 @SpringApplicationConfiguration(classes = App.class)
+@RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
-@IntegrationTest
 public class PersonTest {
 
 	@Autowired
@@ -38,8 +38,8 @@ public class PersonTest {
 	@Before
 	public void setUp() {
 		// Use the test user token.
-		RestAssured.requestSpecification = new RequestSpecBuilder()
-				.addHeader("X-AUTH-TOKEN", "f0bf325a642c300614f31a72084c5ef11609a1ae0a0fba52").build();
+		RestAssured.requestSpecification = new RequestSpecBuilder().addHeader("X-AUTH-TOKEN",
+				"f0bf325a642c300614f31a72084c5ef11609a1ae0a0fba52").build();
 		personRepository.add(testPerson);
 	}
 
@@ -61,7 +61,7 @@ public class PersonTest {
 	@Test
 	public void testGetCurrentlyAuthenticatedUser() {
 		when()//
-				.get(PersonController.API_PERSON)//
+		.get(PersonController.API_PERSON)//
 				.then()//
 				.assertThat()//
 				.statusCode(HttpStatus.OK.value())//
@@ -72,7 +72,7 @@ public class PersonTest {
 	@Test
 	public void testRandomPersonSchema() {
 		when()//
-				.get(PersonController.API_PERSON_RANDOM)//
+		.get(PersonController.API_PERSON_RANDOM)//
 				.then()//
 				.assertThat()//
 				.statusCode(HttpStatus.OK.value())//
@@ -83,7 +83,7 @@ public class PersonTest {
 	@Test
 	public void testTestUserDetails() {
 		given()//
-				.pathParam("id", testPerson.getId())//
+		.pathParam("id", testPerson.getId())//
 				.when().get(PersonController.API_PERSON_BY_ID)//
 				.then()//
 				.assertThat()//
