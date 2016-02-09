@@ -8,40 +8,24 @@ import static org.hamcrest.Matchers.equalTo;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.SpringApplicationConfiguration;
-import org.springframework.boot.test.WebIntegrationTest;
 import org.springframework.http.HttpStatus;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import com.jayway.restassured.RestAssured;
-import com.jayway.restassured.builder.RequestSpecBuilder;
-
-import de.fiduciagad.sharea.server.App;
 import de.fiduciagad.sharea.server.data.repository.PersonRepository;
 import de.fiduciagad.sharea.server.data.repository.dto.Person;
 import de.fiduciagad.sharea.server.rest.PersonController;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@SpringApplicationConfiguration(classes = App.class)
-@WebIntegrationTest({ "server.port=0", "spring.profiles.active=testing" })
-public class PersonIntegrationTest {
+public class PersonIntegrationTest extends AbstractShareAIntegrationTest {
 
 	@Autowired
 	private PersonRepository personRepository;
-
-	@Value("${local.server.port}")
-	private int port;
 
 	private Person testPerson = new Person("Test User");
 
 	@Before
 	public void setUp() {
 		// Use the test user token.
-		RestAssured.requestSpecification = new RequestSpecBuilder()
-				.addHeader("X-AUTH-TOKEN", "f0bf325a642c300614f31a72084c5ef11609a1ae0a0fba52").setPort(port).build();
+
 		personRepository.add(testPerson);
 	}
 
