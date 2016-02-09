@@ -25,13 +25,14 @@ public class PersonIntegrationTest extends AbstractShareAIntegrationTest {
 	@Before
 	public void setUp() {
 		// Use the test user token.
-
 		personRepository.add(testPerson);
 	}
 
 	@After
 	public void tearDown() {
-		personRepository.remove(testPerson);
+		if (testPerson.getId() != null) {
+			personRepository.remove(testPerson);
+		}
 	}
 
 	@Test
