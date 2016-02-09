@@ -53,7 +53,7 @@ public class TokenController {
 		if(null == account) {
 			throw new BadCredentialsException("No such account.");
 		}
-		if (passwordEncoder.matches(newToken.getPassword(), account.getPassword())) {
+		if (!passwordEncoder.matches(newToken.getPassword(), account.getPassword())) {
 			throw new BadCredentialsException("Invalid password.");
 		}
 		
