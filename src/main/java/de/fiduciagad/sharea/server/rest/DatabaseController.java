@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 import de.fiduciagad.sharea.server.data.repository.AccessTokenRepository;
 import de.fiduciagad.sharea.server.data.repository.AccountRepository;
 import de.fiduciagad.sharea.server.data.repository.CategoryRepository;
-import de.fiduciagad.sharea.server.data.repository.EventRepository;
 import de.fiduciagad.sharea.server.data.repository.PersonRepository;
 import de.fiduciagad.sharea.server.data.repository.ShareRepository;
 
@@ -48,9 +47,6 @@ public class DatabaseController {
 	private CategoryRepository categoryRepository;
 
 	@Autowired
-	private EventRepository eventRepository;
-
-	@Autowired
 	private ShareRepository shareRepository;
 
 	@Value("${CLOUDANT_DB_NAME}")
@@ -73,7 +69,6 @@ public class DatabaseController {
 			accessTokenRepository.initStandardDesignDocument();
 			accountRepository.initStandardDesignDocument();
 			categoryRepository.initStandardDesignDocument();
-			eventRepository.initStandardDesignDocument();
 			personRepository.initStandardDesignDocument();
 			shareRepository.initStandardDesignDocument();
 		} catch (Exception e) {
