@@ -17,7 +17,7 @@ import de.fiduciagad.sharea.server.data.access.AccountManager;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @SpringApplicationConfiguration(classes = App.class)
-@WebIntegrationTest({ "server.port=0", "spring.profiles.active=testing" })
+@WebIntegrationTest({ "server.port=0", "spring.profiles.active=testing", "spring.main.banner_mode=off" })
 public class AbstractShareAIntegrationTest {
 
 	@Autowired
