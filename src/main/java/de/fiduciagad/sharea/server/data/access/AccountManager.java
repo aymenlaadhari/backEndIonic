@@ -87,10 +87,11 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 	}
 
 	private Account create(String email, String password, String realname, AccessToken token, String nickname) {
-		if (getRepository().findByEmail(email) != null) {
+		String lowercaseEmail = email.toLowerCase();
+		if (getRepository().findByEmail(lowercaseEmail) != null) {
 			throw new DuplicateKeyException("User already exists.");
 		}
-		Account account = new Account(email, password);
+		Account account = new Account(lowercaseEmail, password);
 		Person person = new Person(realname);
 		person.setNickname(nickname);
 		account.getPersons().add(person);

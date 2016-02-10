@@ -48,21 +48,21 @@ public class TokenController {
 	@RequestMapping(value = "/api/v1/token", method = RequestMethod.POST, produces = "application/json", consumes = "application/json")
 	@ResponseBody
 	public Map<String, String> createToken(@RequestBody(required = true) NewToken newToken) {
-		Account account = accountManager.getAccountByEmail(newToken.getEmail(), true);
-		
-		if(null == account) {
+		Account account = accountManager.getAccountByEmail(newToken.getEmail().toLowerCase(), true);
+
+		if (null == account) {
 			throw new BadCredentialsException("No such account.");
 		}
 		if (!passwordEncoder.matches(newToken.getPassword(), account.getPassword())) {
 			throw new BadCredentialsException("Invalid password.");
 		}
-		
-		try{
+
+		try {
 			String tokenText = accountManager.addToken(account, newToken.getDeviceName(),
 					newToken.getDeviceIdentifier());
-			
+
 			return Collections.singletonMap("auth-token", tokenText);
-		} catch (ModificationException e){
+		} catch (ModificationException e) {
 			throw new BadCredentialsException("Could not authenticate user.");
 		}
 	}
