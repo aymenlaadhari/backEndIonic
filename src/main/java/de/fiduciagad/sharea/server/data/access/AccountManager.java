@@ -1,5 +1,6 @@
 package de.fiduciagad.sharea.server.data.access;
 
+import java.security.AccessControlException;
 import java.security.GeneralSecurityException;
 import java.util.List;
 
@@ -107,9 +108,9 @@ public class AccountManager extends AbstractManager<Account, AccountRepository> 
 	}
 
 	public void createDeveloperAccount(String name, String username, String tokenText, String nickname) {
-		if (!environment.acceptsProfiles("dev")) {
-			logger.error("Method createDeveloperAccount() should only be called in dev environments! No Data changed.");
-			return;
+		if (!environment.acceptsProfiles("dev") && !environment.acceptsProfiles("testing")) {
+			throw new AccessControlException(
+					"Method createDeveloperAccount() can only be called in dev or test environments! No Data changed.");
 		}
 		if (getRepository().findByEmail(username) != null) {
 			logger.info("Skipping creation of developer account " + username + ". Account already exists.");

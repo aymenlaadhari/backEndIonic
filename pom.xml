@@ -256,6 +256,12 @@
 			<version>2.8.0</version>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.apache.maven.plugins</groupId>
+			<artifactId>maven-failsafe-plugin</artifactId>
+			<version>2.19.1</version>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 
@@ -282,6 +288,53 @@
 				<configuration>
 					<source>1.8</source>
 					<target>1.8</target>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<configuration>
+					<excludes>
+						<exclude>**/*IntegrationTest.java</exclude>
+						<exclude>**/Abstract*.java</exclude>
+					</excludes>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>integration-test</goal>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+				<configuration>
+					<environmentVariables>
+						<SPRING_PROFILES_ACTIVE>testing</SPRING_PROFILES_ACTIVE>
+						<VCAP_APPLICATION>bluemix</VCAP_APPLICATION>
+						<CLOUDANT_DB_NAME>sharea-test</CLOUDANT_DB_NAME>
+						<VCAP_SERVICES>
+							{"cloudantNoSQLDB":
+							[{"name":"cloudantNoSQLDB","label":
+							"cloudantNoSQLDB","plan":
+							"Shared","credentials": {"username":
+							"0c63a633-7702-49d4-a122-c063734cc194-bluemix","password":
+							"326819ff6efadaa99bb0cc4ec1e458a73850decb9e4946c0dfa2eb1ea26b92ba","host":
+							"0c63a633-7702-49d4-a122-c063734cc194-bluemix.cloudant.com","port":
+							443,"url":
+							"https://0c63a633-7702-49d4-a122-c063734cc194-bluemix:326819ff6efadaa99bb0cc4ec1e458a73850decb9e4946c0dfa2eb1ea26b92ba@0c63a633-7702-49d4-a122-c063734cc194-bluemix.cloudant.com"}}]}
+						</VCAP_SERVICES>
+					</environmentVariables>
+					<includes>
+						<include>**/*IntegrationTests.java</include>
+						<include>**/*IntegrationTest.java</include>
+					</includes>
+					<excludes>
+						<exclude>**/Abstract*.java</exclude>
+					</excludes>
 				</configuration>
 			</plugin>
 		</plugins>
